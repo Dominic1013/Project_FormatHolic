@@ -1,0 +1,112 @@
+:root {
+  --PrimaryColor: hsl(0, 58%, 58%);
+  --SecondaryColor: hsl(1, 65%, 75%);
+  --gradientColor: linear-gradient(
+    to right,
+    hsl(0, 58%, 58%),
+    hsl(1, 65%, 75%)
+  );
+  --logoGradientColor: linear-gradient(
+    to right,
+    hsl(0, 58%, 58%),
+    hsl(52, 91%, 46%)
+  );
+  --chooseGradientColor: linear-gradient(
+    to right,
+    hsl(0, 0%, 100%),
+    hsl(240, 4%, 36%)
+  );
+  --whiteColor: hsl(0, 0%, 100%);
+  --blackColor: hsl(201, 33%, 16%);
+  --divColor: hsl(240, 1, 22);
+  --divWhiteColor: hsl(0, 0%, 100%);
+
+  --PlaceholderColor: hsl(240, 4%, 36%);
+  --whiteColorDeam: hsl(0, 0%, 93%);
+  --TextColor: hsl(201, 33%, 16%);
+  --inputColor: rgb(239, 239, 239);
+  --bodyColor: hsl(201, 33%, 16%);
+
+  --NavColor: hsl(0, 0%, 85%);
+}
+
+.navBarSection {
+  .header {
+    width: 100%;
+    position: relative;
+    justify-content: space-between;
+    padding: 1rem;
+    z-index: 1000;
+    // border: 2px solid red;
+
+    .logoDiv {
+      // border: 2px solid red;
+
+      .logo {
+        // color: var(--PrimaryColor);
+        background: var(--logoGradientColor);
+        background-clip: text;
+        color: transparent;
+
+        font-weight: 600;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        // border: 2px solid red;
+
+        .icon {
+          color: var(--PrimaryColor);
+          transform: translateY(5px);
+          margin-right: 0.2rem;
+        }
+      }
+    }
+
+    .navbar {
+      position: absolute;
+      height: max-content;
+      width: 80%;
+      background: var(--NavColor);
+      border-radius: 1rem;
+      padding: 1rem;
+      // box-shadow: 0 2px 4px rgba(2, 15, 29, 0.904);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.904);
+
+      top: -100rem;
+
+      left: 50%;
+      transform: translate(-50%); // make a slide animation
+      z-index: 2000;
+      transition: 0.5s ease-in-out;
+
+      .navbarLists {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        margin: auto;
+        padding: 0.5rem 0;
+        gap: 1rem;
+
+        .navItem {
+          .navLink {
+            color: var(--TextColor);
+            font-weight: 600;
+            &:hover {
+              color: var(--PrimaryColor);
+            }
+          }
+        }
+        .btn {
+          a {
+            font-size: 600;
+            color: var(--whiteColor);
+          }
+        }
+      }
+    }
+    .activeNavbar {
+      top: 7rem;
+    }
+  }
+}

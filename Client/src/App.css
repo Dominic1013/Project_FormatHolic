@@ -1,38 +1,123 @@
-.App {
-  text-align: center;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+:root {
+  --PrimaryColor: hsl(0, 58%, 58%);
+  --SecondaryColor: hsl(1, 65%, 75%);
+  --gradientColor: linear-gradient(
+    to right,
+    hsl(0, 58%, 58%),
+    hsl(1, 65%, 75%)
+  );
+  --logoGradientColor: linear-gradient(
+    to right,
+    hsl(0, 58%, 58%),
+    hsl(52, 91%, 46%)
+  );
+  --whiteColor: hsl(0, 0%, 100%);
+  --blackColor: hsl(201, 33%, 16%);
+  --divColor: hsl(240, 1, 22);
+  --divWhiteColor: hsl(0, 0%, 100%);
+
+  --PlaceholderColor: hsl(240, 4%, 36%);
+  --whiteColorDeam: hsl(0, 0%, 93%);
+  --TextColor: hsl(201, 33%, 16%);
+  --inputColor: rgb(239, 239, 239);
+  --bodyColor: hsl(201, 33%, 16%);
+
+  --NavColor: hsl(0, 0%, 85%);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+a {
+  text-decoration: none;
+}
+li {
+  list-style: none;
+}
+
+.section {
+  padding: 4rem 0 2rem;
+}
+
+.container {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.icon {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.flex {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.grid {
+  display: grid;
+  align-items: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btn {
+  /* button don't use margin in global.css */
+  padding: 0.6rem 1.5rem;
+  background: var(--gradientColor);
+  border-radius: 3rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.btn a {
+  color: var(--whiteColor);
+  font-weight: 500;
+}
+
+.btn:hover {
+  background: var(--SecondaryColor);
+}
+
+img,
+video {
+  width: 100%;
+  height: auto;
+}
+
+input {
+  font-size: 100%;
+}
+
+body {
+  background: var(--bodyColor);
+}
+
+h1 {
+  font-size: 2.25rem; /* 36px */
+  line-height: 3.375rem; /* 54px */
+}
+
+h2 {
+  font-size: 2rem; /* 32px */
+  line-height: 3rem; /* 48px */
+}
+
+h3 {
+  font-size: 1.5rem; /* 24px */
+  line-height: 2.25rem; /* 36px */
+}
+
+p {
+  font-size: 1rem; /* 16px */
+  line-height: 1.5rem; /* 24px */
 }

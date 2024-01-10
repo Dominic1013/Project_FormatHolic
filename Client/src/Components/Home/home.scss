@@ -1,0 +1,127 @@
+:root {
+  --PrimaryColor: hsl(0, 58%, 58%);
+  --SecondaryColor: hsl(1, 65%, 75%);
+  --gradientColor: linear-gradient(
+    to right,
+    hsl(0, 58%, 58%),
+    hsl(1, 65%, 75%)
+  );
+  --logoGradientColor: linear-gradient(
+    to right,
+    hsl(0, 58%, 58%),
+    hsl(52, 91%, 46%)
+  );
+  --chooseGradientColor: linear-gradient(
+    to right,
+    hsl(0, 0%, 100%),
+    hsl(240, 4%, 36%)
+  );
+  --whiteColor: hsl(0, 0%, 100%);
+  --blackColor: hsl(201, 33%, 16%);
+  --divColor: hsl(240, 1, 22);
+  --divWhiteColor: hsl(0, 0%, 100%);
+
+  --PlaceholderColor: hsl(240, 4%, 36%);
+  --whiteColorDeam: hsl(0, 0%, 93%);
+  --TextColor: hsl(201, 33%, 16%);
+  --inputColor: rgb(239, 239, 239);
+  --bodyColor: hsl(201, 33%, 16%);
+
+  --NavColor: hsl(0, 0%, 85%);
+}
+
+.home {
+  width: 100%;
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  //   border: 2px solid red;
+
+  .text {
+    color: var(--whiteColor);
+    padding-bottom: 28px;
+    text-align: center;
+  }
+
+  .videoBoxes {
+    flex-direction: column; // media need change
+    gap: 1rem;
+    .videoBox {
+      position: relative;
+      border-radius: 10px;
+
+      border: 2px solid green;
+      .overlay {
+        position: absolute;
+        width: 100%;
+        background: rgb(47, 106, 127);
+        border-radius: 10px;
+        // border: 2px solid purple;
+
+        // make sure overlay would have the same height to videoBox
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+        mix-blend-mode: overlay;
+      }
+      video {
+        border-radius: 10px;
+      }
+
+      .choose {
+        position: absolute;
+        z-index: 100;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 1.2rem 3rem;
+
+        background: var(--whiteColor);
+        box-shadow: 2px 2px 5px 1px var(--blackColor);
+
+        &:hover {
+          //   background: var(--chooseGradientColor);
+          background: var(--logoGradientColor);
+        }
+
+        a {
+          color: var(--blackColor);
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  .howToUse {
+    margin-top: 2rem;
+    padding: 1.2rem 3rem;
+    border-radius: 0%;
+    background: var(--PrimaryColor);
+    box-shadow: 2px 2px 5px 1px var(--blackColor);
+    a {
+      color: var(--blackColor);
+      font-size: 1.5rem;
+    }
+  }
+}
+
+// media Queries-----------------------
+
+@media screen and (min-width: 768px) {
+  .home {
+    justify-content: center;
+
+    .text {
+      h2 {
+        font-size: 3rem;
+        padding-bottom: 0.3rem;
+      }
+    }
+
+    .videoBoxes {
+      flex-direction: row; // media need change
+    }
+  }
+}
