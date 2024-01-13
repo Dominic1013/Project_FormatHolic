@@ -11,14 +11,9 @@
     hsl(0, 58%, 58%),
     hsl(52, 91%, 46%)
   );
-  --chooseGradientColor: linear-gradient(
-    to right,
-    hsl(0, 0%, 100%),
-    hsl(240, 4%, 36%)
-  );
   --whiteColor: hsl(0, 0%, 100%);
   --blackColor: hsl(201, 33%, 16%);
-  --divColor: hsl(240, 1, 22);
+  --divColor: hsl(240, 10%, 30%);
   --divWhiteColor: hsl(0, 0%, 100%);
   --PlaceholderColor: hsl(240, 4%, 36%);
   --whiteColorDeam: hsl(0, 0%, 93%);
@@ -87,4 +82,7 @@
 }
 .navBarSection .header .activeNavbar {
   top: 7rem;
+}
+.navBarSection .header .toggleNavbar .icon {
+  color: var(--NavColor);
 }/*# sourceMappingURL=layout.css.map */

@@ -1,6 +1,9 @@
 import React from "react";
 import "./home.css";
 
+// import icons
+import { FaBookMedical } from "react-icons/fa";
+
 const Home = () => {
   return (
     <section className="home section container flex">
@@ -36,13 +39,15 @@ const Home = () => {
             loop
           ></video>
           <button className="choose btn flex">
-            <a href="#">Basketball</a>
+            <a href="/basketballSetting">Basketball</a>
           </button>
         </div>
       </div>
 
       <button className="howToUse btn flex">
-        <a href="#">How To Use 🫶</a>
+        <a href="#">
+          How To Use <FaBookMedical className="icon" />
+        </a>
       </button>
     </section>
   );

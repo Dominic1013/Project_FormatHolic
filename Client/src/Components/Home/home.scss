@@ -11,11 +11,6 @@
     hsl(0, 58%, 58%),
     hsl(52, 91%, 46%)
   );
-  --chooseGradientColor: linear-gradient(
-    to right,
-    hsl(0, 0%, 100%),
-    hsl(240, 4%, 36%)
-  );
   --whiteColor: hsl(0, 0%, 100%);
   --blackColor: hsl(201, 33%, 16%);
   --divColor: hsl(240, 1, 22);
@@ -26,10 +21,10 @@
   --TextColor: hsl(201, 33%, 16%);
   --inputColor: rgb(239, 239, 239);
   --bodyColor: hsl(201, 33%, 16%);
+  // --bodyColor: hsl(0, 0%, 0%);
 
   --NavColor: hsl(0, 0%, 85%);
 }
-
 .home {
   width: 100%;
 
@@ -50,9 +45,8 @@
     gap: 1rem;
     .videoBox {
       position: relative;
-      border-radius: 10px;
 
-      border: 2px solid green;
+      // border: 2px solid green;
       .overlay {
         position: absolute;
         width: 100%;
@@ -67,6 +61,7 @@
         mix-blend-mode: overlay;
       }
       video {
+        width: 100%;
         border-radius: 10px;
       }
 
@@ -103,6 +98,11 @@
     a {
       color: var(--blackColor);
       font-size: 1.5rem;
+
+      .icon {
+        transform: translateY(5px);
+        color: var(--blackColor);
+      }
     }
   }
 }

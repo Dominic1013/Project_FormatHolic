@@ -62,10 +62,10 @@ const Layout = () => {
                   </a>
                 </li>
                 <button className="btn">
-                  <a href="#">Login</a>
+                  <a href="/login">Login</a>
                 </button>
                 <button className="btn">
-                  <a href="#">Register</a>
+                  <a href="/register">Register</a>
                 </button>
                 <div className="closeNavbar" onClick={removeNavbar}>
                   <AiFillCloseCircle className="icon" />

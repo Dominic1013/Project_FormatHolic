@@ -11,11 +11,6 @@
     hsl(0, 58%, 58%),
     hsl(52, 91%, 46%)
   );
-  --chooseGradientColor: linear-gradient(
-    to right,
-    hsl(0, 0%, 100%),
-    hsl(240, 4%, 36%)
-  );
   --whiteColor: hsl(0, 0%, 100%);
   --blackColor: hsl(201, 33%, 16%);
   --divColor: hsl(240, 1, 22);
@@ -45,8 +40,6 @@
 }
 .home .videoBoxes .videoBox {
   position: relative;
-  border-radius: 10px;
-  border: 2px solid green;
 }
 .home .videoBoxes .videoBox .overlay {
   position: absolute;
@@ -59,6 +52,7 @@
   mix-blend-mode: overlay;
 }
 .home .videoBoxes .videoBox video {
+  width: 100%;
   border-radius: 10px;
 }
 .home .videoBoxes .videoBox .choose {
@@ -88,6 +82,10 @@
 .home .howToUse a {
   color: var(--blackColor);
   font-size: 1.5rem;
+}
+.home .howToUse a .icon {
+  transform: translateY(5px);
+  color: var(--blackColor);
 }
 
 @media screen and (min-width: 768px) {

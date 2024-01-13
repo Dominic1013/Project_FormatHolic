@@ -22,7 +22,7 @@
   );
   --whiteColor: hsl(0, 0%, 100%);
   --blackColor: hsl(201, 33%, 16%);
-  --divColor: hsl(240, 1, 22);
+  --divColor: hsl(240, 10%, 30%);
   --divWhiteColor: hsl(0, 0%, 100%);
 
   --PlaceholderColor: hsl(240, 4%, 36%);
