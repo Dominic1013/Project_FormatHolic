@@ -15,11 +15,11 @@ const Login = () => {
       <div className="login container flex">
         <h2>Login</h2>
         <form id="form" className="form flex">
-          <label for="username">username:</label>
+          <label for="username">username :</label>
           <input type="text" id="username" placeholder="Dominic Huang" />
-          <label for="displayname">displayname</label>
+          <label for="displayname">displayname :</label>
           <input type="text" id="displayname" placeholder="ET" />
-          <label for="password">password</label>
+          <label for="password">password :</label>
           <input type="text" id="password" placeholder="Enter your password" />
 
           <button className="submit btn">Submit</button>

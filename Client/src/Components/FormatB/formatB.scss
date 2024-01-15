@@ -1,0 +1,185 @@
+:root {
+  --PrimaryColor: hsl(0, 58%, 58%);
+  --SecondaryColor: hsl(1, 65%, 75%);
+  --gradientColor: linear-gradient(
+    to right,
+    hsl(0, 58%, 58%),
+    hsl(1, 65%, 75%)
+  );
+  --logoGradientColor: linear-gradient(
+    to right,
+    hsl(0, 58%, 58%),
+    hsl(52, 91%, 46%)
+  );
+  --whiteColor: hsl(0, 0%, 100%);
+  --blackColor: hsl(201, 33%, 16%);
+  --divColor: hsl(240, 10%, 30%);
+  --divWhiteColor: hsl(0, 0%, 100%);
+
+  --PlaceholderColor: hsl(240, 4%, 36%);
+  --whiteColorDeam: hsl(0, 0%, 93%);
+  --TextColor: hsl(201, 33%, 16%);
+  --inputColor: rgb(239, 239, 239);
+  --bodyColor: hsl(201, 33%, 16%);
+
+  --NavColor: hsl(0, 0%, 85%);
+}
+
+// scss -------------------------
+
+.formatB {
+  min-width: 100vw;
+  //   min-height: 100vh;
+  position: relative;
+  padding-top: 4rem;
+  .canvasContainer {
+    position: relative;
+    width: 100%;
+    height: max-content;
+    margin-bottom: 4rem;
+
+    // border: 2px solid red;
+    canvas {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+    }
+  }
+
+  .swiperDiv {
+    background: var(--divColor);
+    padding: 0.5rem;
+    // border-radius: 10px;
+    // margin-bottom: 4rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.904);
+
+    margin-bottom: 3rem;
+    .swiper-wrapper {
+      .swiper-slide {
+        display: flex;
+        position: relative;
+        cursor: pointer;
+        &:hover {
+          border: 2px solid var(--PrimaryColor);
+          //   border-radius: 10px;
+        }
+      }
+    }
+  }
+
+  .fnCollection {
+    grid-template-columns: repeat(5, 1fr);
+    // grid-template-columns: repeat(5, 50px);
+    align-items: center;
+    justify-content: center;
+
+    // position: absolute;
+    // bottom: 0;
+
+    background: var(--divColor);
+    border-radius: 10px;
+    gap: 0.75rem; //12px
+
+    // border: 2px solid red;
+    .fnBox {
+      width: 100%;
+      height: 100%;
+      min-height: 100px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+
+      cursor: pointer;
+
+      .fnText {
+        text-align: center;
+        color: var(--whiteColorDeam);
+        font-size: 0.75rem;
+        line-height: 1rem;
+        font-weight: 500;
+      }
+      .circle {
+        background: var(--whiteColor);
+        width: 40px;
+        height: 40px;
+        clip-path: circle();
+        justify-content: center;
+        align-items: center;
+
+        &:hover {
+          background: var(--logoGradientColor);
+        }
+
+        .icon {
+          align-self: center;
+          justify-content: center;
+          color: var(--blackColor);
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}
+
+// Media Queries------------------
+
+@media screen and (min-width: 768px) {
+  .formatB {
+    padding-top: 2rem;
+    .canvasContainer {
+      max-width: 800px;
+
+      margin: auto;
+      margin-bottom: 4rem;
+    }
+
+    .swiperDiv {
+      max-width: 800px;
+      margin: auto;
+      margin-bottom: 2rem;
+      border-radius: 10px;
+    }
+
+    .fnCollection {
+      grid-template-columns: none;
+      grid-template-rows: repeat(6, 100px);
+      position: fixed;
+      width: 100px;
+      left: 0;
+      z-index: 100;
+      bottom: 0;
+    }
+
+    .active {
+      transition: all 1.5s ease-in-out;
+      left: -500rem;
+    }
+
+    .toggleContainer {
+      position: absolute;
+      background: white;
+      bottom: 26%;
+      right: 49%;
+
+      width: max-content;
+
+      font-size: 1rem;
+      border-radius: 5px;
+
+      &:hover {
+        background: var(--logoGradientColor);
+      }
+    }
+  }
+}
+
+// for toggle display: none in phone
+@media screen and (max-width: 767px) {
+  .formatB {
+    .toggleContainer {
+      display: none;
+    }
+  }
+}
