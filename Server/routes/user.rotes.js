@@ -2,7 +2,6 @@ import express from "express";
 import requestHandler from "../handlers/request.handler.js";
 import userController from "../controller/user.controller.js";
 import { body } from "express-validator";
-import { Error } from "mongoose";
 
 const router = express.Router();
 

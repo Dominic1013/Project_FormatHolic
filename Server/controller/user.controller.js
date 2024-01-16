@@ -6,7 +6,6 @@ const register = async (req, res) => {
   try {
     const { username, password, confirmPassword, displayname } = req.body;
 
-    console.log(`${username},${displayname}`);
     const checkUser = await userModel.findOne({ username });
 
     if (checkUser)

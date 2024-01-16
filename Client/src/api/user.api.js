@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:5000/api/user";
+import publicClient from "./public.client";
 
 const userEndpoints = {
   register: "/register",
@@ -7,17 +7,32 @@ const userEndpoints = {
 };
 
 const userApi = {
-  register: (username, password, displayname, confirmPassword) => {
-    return axios.post(API_URL + userEndpoints.register, {
-      username,
-      password,
-      displayname,
-      confirmPassword,
-    });
+  register: async ({ username, password, displayname, confirmPassword }) => {
+    try {
+      const response = await publicClient.post(userEndpoints.register, {
+        username,
+        password,
+        displayname,
+        confirmPassword,
+      });
+
+      return { response };
+    } catch (err) {
+      return { err };
+    }
   },
 
-  login: (username, password) => {
-    return axios.post(API_URL + userEndpoints.login, { username, password });
+  login: async ({ username, password }) => {
+    try {
+      const response = await publicClient.post(userEndpoints.login, {
+        username,
+        password,
+      });
+
+      return { response };
+    } catch (err) {
+      return { err };
+    }
   },
 };
 
