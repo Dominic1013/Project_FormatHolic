@@ -1,10 +1,28 @@
 import React from "react";
 import "./login.css";
+import userApi from "../../api/user.api";
+import { useNavigate } from "react-router-dom";
 
 // import icons
 import { FaBookMedical } from "react-icons/fa";
 
 const Login = () => {
+  const Navigate = useNavigate();
+
+  const handleLogin = async (values) => {
+    try {
+      const { response, err } = await userApi.register(values);
+
+      if (response) {
+        window.alert("Register succeed");
+        Navigate("/");
+      }
+
+      if (err) {
+      }
+    } catch (err) {}
+  };
+
   return (
     <section className="loginSection section container flex">
       <div className="text">

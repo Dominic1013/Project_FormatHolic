@@ -1,11 +1,12 @@
-import responseHandler from "../handlers/response.handler";
-import userModel from "../models/user.model";
+import responseHandler from "../handlers/response.handler.js";
+import userModel from "../models/user.model.js";
 import jsonwebtoken from "jsonwebtoken";
 
-const signUp = async (req, res) => {
+const register = async (req, res) => {
   try {
     const { username, password, confirmPassword, displayname } = req.body;
 
+    console.log(`${username},${displayname}`);
     const checkUser = await userModel.findOne({ username });
 
     if (checkUser)
@@ -39,11 +40,11 @@ const signUp = async (req, res) => {
   }
 };
 
-const signIn = async (req, res) => {
+const login = async (req, res) => {
   try {
-    const { username, password } = rea.body;
+    const { username, password } = req.body;
 
-    const user = userModel
+    const user = await userModel
       .findOne({ username })
       .select("username displayname password salt id");
 
@@ -67,8 +68,9 @@ const signIn = async (req, res) => {
       id: user.id,
     });
   } catch {
+    console.log("hi");
     return responseHandler.error(res);
   }
 };
 
-export default { signUp, signIn };
+export default { register, login };
