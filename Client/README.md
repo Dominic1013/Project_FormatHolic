@@ -10,3 +10,6 @@ UPDATE (INSTALL) :
     "formik": "^2.4.5",
     "query-string": "^8.1.0",
     "yup": "^1.3.3"
+    "redux": "^5.0.1",
+    "react-redux": "^9.1.0",
+    "@reduxjs/toolkit": "^2.0.1",

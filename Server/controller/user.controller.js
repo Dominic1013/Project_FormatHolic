@@ -67,7 +67,6 @@ const login = async (req, res) => {
       id: user.id,
     });
   } catch {
-    console.log("hi");
     return responseHandler.error(res);
   }
 };

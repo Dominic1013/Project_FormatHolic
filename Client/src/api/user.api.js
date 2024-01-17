@@ -1,4 +1,3 @@
-import axios from "axios";
 import publicClient from "./public.client";
 
 const userEndpoints = {

@@ -4,12 +4,15 @@ import userApi from "../../api/user.api";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/user.slice";
 
 // import icons
 import { FaBookMedical } from "react-icons/fa";
 
 const Login = () => {
   const Navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -31,6 +34,7 @@ const Login = () => {
 
       if (response) {
         loginFrom.resetForm();
+        dispatch(setUser(response));
         console.log("OK");
         Navigate("/");
       }

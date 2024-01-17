@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import "./register.css";
 import userApi from "../../api/user.api";
+import { setUser } from "../../redux/slices/user.slice";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 // import icons
 import { FaBookMedical } from "react-icons/fa";
 
 const Register = () => {
   const Navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -38,6 +41,7 @@ const Register = () => {
 
       if (response) {
         registerForm.resetForm();
+        dispatch(setUser(response));
         console.log("OK");
         Navigate("/");
       }
@@ -65,6 +69,7 @@ const Register = () => {
             type="text"
             id="username"
             onChange={registerForm.handleChange}
+            value={registerForm.values.username}
             placeholder="Dominic Huang"
           />
           <label for="displayname">displayname :</label>
@@ -72,6 +77,7 @@ const Register = () => {
             type="text"
             id="displayname"
             onChange={registerForm.handleChange}
+            value={registerForm.values.displayname}
             placeholder="ET"
           />
           <label for="password">password :</label>
@@ -79,6 +85,7 @@ const Register = () => {
             type="text"
             id="password"
             onChange={registerForm.handleChange}
+            value={registerForm.values.password}
             placeholder="Enter your password"
           />
           <label for="confirmPassword">confirmPassword :</label>
@@ -86,6 +93,7 @@ const Register = () => {
             type="text"
             id="confirmPassword"
             onChange={registerForm.handleChange}
+            value={registerForm.values.confirmPassword}
             placeholder="Enter your password again"
           />
           <button className="submit btn" type="submit">

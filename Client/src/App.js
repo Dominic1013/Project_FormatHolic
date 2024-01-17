@@ -11,19 +11,21 @@ import NoMatch from "./Components/NoMatch/NoMatch";
 
 function App() {
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="storage" element={<Storage />} />
-          <Route path="basketballSetting" element={<BasketballSetting />} />
-          <Route path="formatB" element={<FormatB />} />
-          <Route path="*" element={<NoMatch />} />
-        </Route>
-      </Routes>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="storage" element={<Storage />} />
+            <Route path="basketballSetting" element={<BasketballSetting />} />
+            <Route path="formatB" element={<FormatB />} />
+            <Route path="*" element={<NoMatch />} />
+          </Route>
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
