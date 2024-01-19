@@ -24,9 +24,9 @@ const signUp = async (req, res) => {
     await user.save();
 
     const token = jsonwebtoken.sign(
-      { data: user.id },
+      { data: user.id }, // 為什麼不用底線
       process.env.TOKEN_SECRET,
-      { expiresIn: "24h" }
+      { expiresIn: "24h" } // 24小時後失效
     );
 
     responseHandler.created(res, {
@@ -58,6 +58,7 @@ const signIn = async (req, res) => {
       { expiresIn: "24h" }
     );
 
+    // 不讓使用者自己知道salt，但沒有save，所以不影響mongoDB的操作
     user.password = undefined;
     user.salt = undefined;
 

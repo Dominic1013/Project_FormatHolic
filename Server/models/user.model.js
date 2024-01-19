@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
   modelOptions,
 });
 
+// 這裡會自動創造password
 userSchema.methods.setPassword = function (password) {
   this.salt = crypto.randomBytes(16).toString("hex");
 
@@ -33,6 +34,7 @@ userSchema.methods.setPassword = function (password) {
     .toString("hex");
 };
 
+// 對照password + salt
 userSchema.methods.validPassword = function (password) {
   const hash = crypto
     .pbkdf2Sync(password, this.salt, 1000, 64, "sha512")
