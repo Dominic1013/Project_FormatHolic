@@ -20,7 +20,11 @@ const Login = () => {
           <label for="displayname">displayname :</label>
           <input type="text" id="displayname" placeholder="ET" />
           <label for="password">password :</label>
-          <input type="text" id="password" placeholder="Enter your password" />
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+          />
 
           <button className="submit btn">Submit</button>
         </form>
