@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import modelOptions from "./models.options";
 import crypto from "crypto";
 
 const userSchema = new mongoose.Schema({
@@ -22,7 +21,6 @@ const userSchema = new mongoose.Schema({
     require: true,
     select: false,
   },
-  modelOptions,
 });
 
 // 這裡會自動創造password

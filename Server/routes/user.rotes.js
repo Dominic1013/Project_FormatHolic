@@ -1,13 +1,12 @@
 import express from "express";
-import requestHandler from "../handlers/request.handler";
-import userController from "../controller/user.controller";
+import requestHandler from "../handlers/request.handler.js";
+import userController from "../controller/user.controller.js";
 import { body } from "express-validator";
-import { Error } from "mongoose";
 
 const router = express.Router();
 
 router.post(
-  "/signup",
+  "/register",
 
   body("username")
     .exists()
@@ -27,18 +26,18 @@ router.post(
     .isLength({ min: 8 })
     .withMessage("confirmPassword minimum 8 character"),
 
-  body("displayName")
+  body("displayname")
     .exists()
     .withMessage("displayName is required")
     .isLength({ min: 8 })
     .withMessage("displayName minimum 8 character"),
 
   requestHandler.validate,
-  userController.signUp
+  userController.register
 );
 
 router.post(
-  "/signin",
+  "/login",
 
   body("username")
     .exists()
@@ -53,7 +52,7 @@ router.post(
     .withMessage("Password minimum 8 character"),
 
   requestHandler.validate,
-  userController.signIn
+  userController.login
 );
 
 export default router;

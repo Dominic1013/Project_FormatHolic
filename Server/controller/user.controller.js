@@ -1,8 +1,8 @@
-import responseHandler from "../handlers/response.handler";
-import userModel from "../models/user.model";
+import responseHandler from "../handlers/response.handler.js";
+import userModel from "../models/user.model.js";
 import jsonwebtoken from "jsonwebtoken";
 
-const signUp = async (req, res) => {
+const register = async (req, res) => {
   try {
     const { username, password, confirmPassword, displayname } = req.body;
 
@@ -39,11 +39,11 @@ const signUp = async (req, res) => {
   }
 };
 
-const signIn = async (req, res) => {
+const login = async (req, res) => {
   try {
-    const { username, password } = rea.body;
+    const { username, password } = req.body;
 
-    const user = userModel
+    const user = await userModel
       .findOne({ username })
       .select("username displayname password salt id");
 
@@ -72,4 +72,4 @@ const signIn = async (req, res) => {
   }
 };
 
-export default { signUp, signIn };
+export default { register, login };
