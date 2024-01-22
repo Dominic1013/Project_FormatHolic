@@ -68,14 +68,14 @@ const Login = () => {
             onChange={loginFrom.handleChange}
           />
 
+          {errorMessage && (
+            <div>
+              <h5>{errorMessage}</h5>
+            </div>
+          )}
+
           <button className="submit btn">Submit</button>
         </form>
-
-        {errorMessage && (
-          <div>
-            <h5>{errorMessage}</h5>
-          </div>
-        )}
       </div>
 
       <button className="howToUse btn flex">

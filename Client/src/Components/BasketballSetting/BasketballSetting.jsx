@@ -6,32 +6,53 @@ const BasketballSetting = () => {
   const [fullGroundClick, setFullGroundClick] = useState(
     "imageDiv groundActive"
   );
-  const [halfGroundClick, setHalfGgroundClick] = useState("imageDiv");
-  const fullGroundClickHandler = () => {
-    // clear another one's active
-    setHalfGgroundClick("imageDiv");
-    setFullGroundClick("imageDiv groundActive");
-  };
-  const halfGroundClickHandler = () => {
-    // clear another one's active
-    setFullGroundClick("imageDiv");
-    setHalfGgroundClick("imageDiv groundActive");
-  };
+  const [halfGroundClick, setHalfGroundClick] = useState("imageDiv");
 
   // Function For initFormatClick Event
   const [initFormatClick1, setInitFormatClick1] = useState(
     "imageDiv initFormatActive"
   );
   const [initFormatClick2, setInitFormatClick2] = useState("imageDiv");
+  const [name, setName] = useState("");
+  const [players, setPlayers] = useState([]);
+
+  const groundClickHandler = () => {
+    // clear another one's active
+    if (fullGroundClick === "imageDiv") {
+      setHalfGroundClick("imageDiv");
+      setFullGroundClick("imageDiv  groundActive");
+    } else {
+      setHalfGroundClick("imageDiv groundActive");
+      setFullGroundClick("imageDiv");
+    }
+  };
+
   const initFormatClick1Handler = () => {
     // clear another one's active
-    setInitFormatClick2("imageDiv");
-    setInitFormatClick1("imageDiv initFormatActive");
+    if (initFormatClick1 === "imageDiv") {
+      setInitFormatClick2("imageDiv");
+      setInitFormatClick1("imageDiv initFormatActive");
+    } else {
+      setInitFormatClick1("imageDiv");
+      setInitFormatClick2("imageDiv initFormatActive");
+    }
   };
-  const initFormatClick2Handler = () => {
-    // clear another one's active
-    setInitFormatClick1("imageDiv");
-    setInitFormatClick2("imageDiv initFormatActive");
+
+  const handleChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleAddPlayer = () => {
+    if (name.trim() !== "") {
+      const newPlayers = { id: Date.now(), name: name };
+      setPlayers([...players, newPlayers]);
+      setName("");
+    }
+  };
+
+  const handleRemove = (id) => {
+    const newPlayers = players.filter((player) => player.id !== id);
+    setPlayers(newPlayers);
   };
 
   return (
@@ -58,11 +79,11 @@ const BasketballSetting = () => {
 
             {/* add images */}
             <div className="imageDivs flex">
-              <div className={fullGroundClick} onClick={fullGroundClickHandler}>
+              <div className={fullGroundClick} onClick={groundClickHandler}>
                 <img src="/settingMedia/ground_full.jpg" alt="ground_full" />
               </div>
 
-              <div className={halfGroundClick} onClick={halfGroundClickHandler}>
+              <div className={halfGroundClick} onClick={groundClickHandler}>
                 <img
                   src="/settingMedia/ground_fullOverlay.jpg"
                   alt="ground_half"
@@ -81,17 +102,25 @@ const BasketballSetting = () => {
                 type="text"
                 className="nameInput"
                 placeholder="ex: Mark or 1"
+                onChange={handleChange}
               />
-              <input type="color" className="colorInput" />
-              <input type="text" className="nameInput" />
-              <input type="color" className="colorInput" />
-              <input type="text" className="nameInput" />
-              <input type="color" className="colorInput" />
-              <input type="text" className="nameInput" />
-              <input type="color" className="colorInput" />
-              <input type="text" className="nameInput" />
+
+              <box onClick={handleAddPlayer}>add</box>
               <input type="color" className="colorInput" />
             </div>
+
+            {players &&
+              players.map((player) => (
+                <div style={{ display: "flex " }} id={player.id}>
+                  <p>{player.name}</p>
+                  <box
+                    style={{ paddingLeft: "10px" }}
+                    onClick={() => handleRemove(player.id)}
+                  >
+                    delete
+                  </box>
+                </div>
+              ))}
           </div>
 
           {/* add images */}
@@ -112,7 +141,7 @@ const BasketballSetting = () => {
 
               <div
                 className={initFormatClick2}
-                onClick={initFormatClick2Handler}
+                onClick={initFormatClick1Handler}
               >
                 <img
                   src="/settingMedia/ground_initFormat2.jpg"

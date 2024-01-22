@@ -96,17 +96,18 @@ const Register = () => {
             value={registerForm.values.confirmPassword}
             placeholder="Enter your password again"
           />
+
+          {errorMessage && (
+            <div>
+              <h5>{errorMessage}</h5>
+            </div>
+          )}
+
           <button className="submit btn" type="submit">
             Submit
           </button>
         </form>
       </div>
-
-      {errorMessage && (
-        <div>
-          <h5>{errorMessage}</h5>
-        </div>
-      )}
 
       <button className="howToUse btn flex">
         <a href="#">
