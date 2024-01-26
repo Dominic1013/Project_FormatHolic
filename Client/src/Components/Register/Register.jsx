@@ -38,7 +38,6 @@ const Register = () => {
     }),
     onSubmit: async (values) => {
       const { response, err } = await userApi.register(values);
-
       if (response) {
         registerForm.resetForm();
         dispatch(setUser(response));

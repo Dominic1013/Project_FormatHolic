@@ -15,6 +15,7 @@ const BasketballSetting = () => {
   const [initFormatClick2, setInitFormatClick2] = useState("imageDiv");
   const [name, setName] = useState("");
   const [players, setPlayers] = useState([]);
+  console.log(players);
 
   const groundClickHandler = () => {
     // clear another one's active

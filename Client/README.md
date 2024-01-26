@@ -13,3 +13,7 @@ UPDATE (INSTALL) :
     "redux": "^5.0.1",
     "react-redux": "^9.1.0",
     "@reduxjs/toolkit": "^2.0.1",
+
+UPDATE(INSTALL) 2024/01/26 :
+
+    "redux-persist": "^6.0.0",

@@ -7,8 +7,11 @@ import { Outlet } from "react-router-dom";
 import { TbGridDots } from "react-icons/tb";
 import { PiSneakerMoveDuotone } from "react-icons/pi";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
 const Layout = () => {
+  const { user } = useSelector((state) => state.user);
+
   const [active, setActive] = useState("navbar");
   // Function to toggle navBar
   // className navbar is moveAway , activeNavbar is showUp
@@ -27,12 +30,8 @@ const Layout = () => {
     setActive("navbar");
   };
 
-  //  if (session.status === "loading") {
-  // if ("loading") {
-  //   return <p>Loading...</p>;
-  // }
-  // if (session.status === "unauthenticated") {
-  if ("unauthenticated") {
+  // 未登入
+  if (!user) {
     return (
       <>
         <section className="navBarSection">
@@ -83,8 +82,8 @@ const Layout = () => {
       </>
     );
   }
-  // if (session.status === "authenticated") {
-  if ("authenticated") {
+  // 已經登入
+  if (user) {
     return (
       <>
         <section className="navBarSection">
