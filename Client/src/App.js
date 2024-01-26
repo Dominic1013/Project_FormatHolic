@@ -1,13 +1,14 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./Components/Home/Home";
+import Home from "./pages/Home/Home";
 import Layout from "./Components/Layout/Layout";
-import Login from "./Components/Login/Login";
-import Register from "./Components/Register/Register";
-import Storage from "./Components/Storage/Storage";
-import BasketballSetting from "./Components/BasketballSetting/BasketballSetting";
-import FormatB from "./Components/FormatB/FormatB";
 import NoMatch from "./Components/NoMatch/NoMatch";
+import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import Storage from "./pages/Storage/Storage";
+import BasketballSetting from "./pages/BasketballSetting/BasketballSetting";
+import FormatB from "./pages/FormatB/FormatB";
 
 function App() {
   return (
@@ -18,9 +19,11 @@ function App() {
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-            <Route path="storage" element={<Storage />} />
-            <Route path="basketballSetting" element={<BasketballSetting />} />
-            <Route path="formatB" element={<FormatB />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="storage" element={<Storage />} />
+              <Route path="basketballSetting" element={<BasketballSetting />} />
+              <Route path="formatB" element={<FormatB />} />
+            </Route>
             <Route path="*" element={<NoMatch />} />
           </Route>
         </Routes>
