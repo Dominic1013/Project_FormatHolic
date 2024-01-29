@@ -43,6 +43,7 @@
   background: var(--divColor);
   padding: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.904);
+  margin-top: 3rem;
   margin-bottom: 3rem;
 }
 .formatB .swiperDiv .swiper-wrapper .swiper-slide {
@@ -54,7 +55,7 @@
   border: 2px solid var(--PrimaryColor);
 }
 .formatB .fnCollection {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   align-items: center;
   justify-content: center;
   background: var(--divColor);
@@ -128,18 +129,18 @@
     left: 0;
     z-index: 100;
     bottom: 50;
+    transition: all 1.5s ease-in-out;
   }
   .formatB .active {
     transition: all 1.5s ease-in-out;
     left: -500rem;
   }
   .formatB .toggleContainer {
-    position: absolute;
-    background: white;
-    bottom: 30%;
-    right: 49%;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
     width: -moz-max-content;
     width: max-content;
+    background: white;
     font-size: 1rem;
     border-radius: 5px;
   }
@@ -148,7 +149,15 @@
   }
 }
 @media screen and (max-width: 767px) {
+  .formatB .swiperDiv {
+    width: 100%;
+  }
   .formatB .toggleContainer {
     display: none;
+  }
+}
+@media screen and (max-width: 465px) {
+  .formatB .fnCollection {
+    grid-template-columns: repeat(4, 1fr);
   }
 }/*# sourceMappingURL=formatB.css.map */

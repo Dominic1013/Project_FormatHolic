@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./formatB.css";
 
 // import icons
@@ -53,11 +53,46 @@ const FormatB = () => {
     { x: 100, y: 100 },
     { x: 150, y: 150 },
   ]); // 初始球員位置
+  // drawing lines state
   const [lines, setLines] = useState([]);
+  // for players circle RWD
+  const [circleRadius, setCircleRadius] = useState(20);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isEraser, setIsEraser] = useState(false);
+  // for prevStep & nextStep state
   const [restore, setRestore] = useState([]);
-  console.log(restore);
+
+  // listen window size(for Stage RWD)
+  const [canvasSize, setCanvasSize] = useState({ width: 873, height: 494 });
+  useEffect(() => {
+    const checkSize = () => {
+      if (window.innerWidth < 900) {
+        // small than 900px, Pad mode
+        setCanvasSize({ width: 700, height: 396 });
+        setCircleRadius(20);
+      }
+      if (window.innerWidth < 800) {
+        // small than 900px, Pad mode
+        setCanvasSize({ width: 500, height: 283 });
+        setCircleRadius(20);
+      }
+
+      if (window.innerWidth < 500) {
+        setCanvasSize({ width: 300, height: 170 });
+        setCircleRadius(10);
+      }
+      if (window.innerWidth > 900) {
+        setCanvasSize({ width: 873, height: 494 });
+        setCircleRadius(20);
+      }
+    };
+
+    // 監聽window大小變化，若使用者調整window大小，監聽它
+    window.addEventListener("resize", checkSize);
+
+    // 第一次render時需要手動啟用此函數，因為window監聽一開始使用者不會調整。
+    checkSize();
+  }, []);
 
   // konva.js handleFn
   // handle drag move with player cicle
@@ -148,8 +183,8 @@ const FormatB = () => {
       {/* Konva.js */}
       <section>
         <Stage
-          width={873}
-          height={494}
+          width={canvasSize.width}
+          height={canvasSize.height}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -157,7 +192,11 @@ const FormatB = () => {
           {/* Layer split two layer, */}
           {/* Background Layer */}
           <Layer>
-            <Image image={courtIamge} width={873} height={494} />
+            <Image
+              image={courtIamge}
+              width={canvasSize.width}
+              height={canvasSize.height}
+            />
           </Layer>
 
           {/* Players Layer */}
@@ -167,7 +206,7 @@ const FormatB = () => {
                 key={index}
                 x={player.x}
                 y={player.y}
-                radius={20}
+                radius={circleRadius}
                 fill="red"
                 draggable
                 onDragStart={(e) => handleDragStart(e, index)}
@@ -193,6 +232,12 @@ const FormatB = () => {
           </Layer>
         </Stage>
       </section>
+
+      {/* --------------------------------------------------- */}
+      {/* toggle button(PC pad) */}
+      <div className="toggleContainer flex" onClick={collectionClickHandler}>
+        <RiFunctionLine className="icon" />
+      </div>
       {/* --------------------------------------------------- */}
       {/* swiper.js */}
       <div className="swiperDiv">
@@ -270,10 +315,6 @@ const FormatB = () => {
           </div>
           {/* <p className="fnText">Settings</p> */}
         </div>
-      </div>
-
-      <div className="toggleContainer flex" onClick={collectionClickHandler}>
-        <RiFunctionLine className="icon" />
       </div>
     </section>
   );
