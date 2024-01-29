@@ -29,22 +29,18 @@
 
 .formatB {
   min-width: 100vw;
-  //   min-height: 100vh;
+  min-height: 100vh;
   position: relative;
   padding-top: 4rem;
   .canvasContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: relative;
     width: 100%;
-    height: max-content;
+    // height: max-content;
     margin-bottom: 4rem;
-
-    // border: 2px solid red;
-    canvas {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 100;
-    }
   }
 
   .swiperDiv {
@@ -128,11 +124,19 @@
 @media screen and (min-width: 768px) {
   .formatB {
     padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
     .canvasContainer {
       max-width: 800px;
 
       margin: auto;
       margin-bottom: 4rem;
+
+      canvas {
+        transform: scale(2); // for canvas width height problem
+      }
     }
 
     .swiperDiv {
@@ -160,7 +164,7 @@
     .toggleContainer {
       position: absolute;
       background: white;
-      bottom: 26%;
+      bottom: 30%;
       right: 49%;
 
       width: max-content;

@@ -25,21 +25,18 @@
 
 .formatB {
   min-width: 100vw;
+  min-height: 100vh;
   position: relative;
   padding-top: 4rem;
 }
 .formatB .canvasContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: relative;
   width: 100%;
-  height: -moz-max-content;
-  height: max-content;
   margin-bottom: 4rem;
-}
-.formatB .canvasContainer canvas {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 100;
 }
 .formatB .swiperDiv {
   background: var(--divColor);
@@ -102,11 +99,17 @@
 @media screen and (min-width: 768px) {
   .formatB {
     padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   .formatB .canvasContainer {
     max-width: 800px;
     margin: auto;
     margin-bottom: 4rem;
+  }
+  .formatB .canvasContainer canvas {
+    transform: scale(2);
   }
   .formatB .swiperDiv {
     max-width: 800px;
@@ -130,7 +133,7 @@
   .formatB .toggleContainer {
     position: absolute;
     background: white;
-    bottom: 26%;
+    bottom: 30%;
     right: 49%;
     width: -moz-max-content;
     width: max-content;

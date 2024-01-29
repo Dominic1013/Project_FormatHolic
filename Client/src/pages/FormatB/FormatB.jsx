@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./formatB.css";
 
 // import icons
@@ -37,6 +37,10 @@ const testData = [
 ];
 
 const FormatB = () => {
+  const canvasRef = useRef(null);
+  const contextRef = useRef(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+
   // fncollection clcik event useState
   const [collectionActive, setCollectionActive] = useState(
     "fnCollection grid container"
@@ -51,12 +55,65 @@ const FormatB = () => {
     }
   };
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    // canvas.width = 500;
+    // canvas.height = 500;
+    // canvas.style.width = "500px";
+    // canvas.style.height = "500px";
+    const context = canvas.getContext("2d");
+    context.scale(2, 2);
+    context.lineCap = "round";
+    context.strokeStyle = "black";
+    context.lineWidth = 5;
+
+    contextRef.current = context;
+  }, []);
+
+  const startDrawing = ({ nativeEvent }) => {
+    const { offsetX, offsetY } = nativeEvent;
+    contextRef.current.beginPath();
+    contextRef.current.moveTo(offsetX, offsetY);
+    setIsDrawing(true);
+  };
+  const finishDrawing = () => {
+    contextRef.current.closePath();
+    setIsDrawing(false);
+  };
+  const draw = ({ nativeEvent }) => {
+    if (!isDrawing) {
+      return;
+    }
+    const { offsetX, offsetY } = nativeEvent;
+    contextRef.current.lineTo(offsetX, offsetY);
+    contextRef.current.stroke();
+    console.log("draw...");
+  };
+
   return (
     <section className="formatB">
       <div className="canvasContainer">
-        {/* 之後可確認寬高是否要放在元素上面寫，不曉得會不會有bug。 */}
-        <canvas id="myCanvas"></canvas>
-        <img src="./formatBMedia/court.png" alt="court" />
+        {/* canvas 寬高只能在這裡設定，scss設定會有bug */}
+
+        {/* 理想上lg: 800 x 480.5 */}
+        {/* 目前是sm scale(2) */}
+        {/* sm: 375 x 225.2 */}
+        <canvas
+          id="myCanvas"
+          ref={canvasRef}
+          width={375}
+          height={225.2}
+          onMouseMove={draw}
+          onMouseDown={startDrawing}
+          onMouseUp={finishDrawing}
+          style={{
+            background: `url(${"./formatBMedia/court.png"})`,
+            backgroundSize: "contain",
+            backgroundRepeat: `no-repeat`,
+          }}
+          // style={{ background: "white" }}
+        />
+        {/* <img src="./formatBMedia/court.png" alt="court" /> */}
       </div>
 
       {/* swiper.js */}
@@ -71,9 +128,9 @@ const FormatB = () => {
           onSwiper={(swiper) => console.log(swiper)}
           onSlideChange={() => console.log("slide change")}
         >
-          {testData.map((data) => {
+          {testData.map((data, index) => {
             return (
-              <SwiperSlide>
+              <SwiperSlide key={index}>
                 <img src={data.image} alt="" />
               </SwiperSlide>
             );
