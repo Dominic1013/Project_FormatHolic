@@ -31,6 +31,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   //   border: 2px solid red;
   .settingForm {
     flex-direction: column;
@@ -306,9 +307,18 @@
     padding-left: 3rem;
     padding-right: 3rem;
     .settingForm {
+      max-width: 1000px;
+
+      .teamNameDiv {
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+        #teamName {
+          max-width: 600px;
+        }
+      }
       .firstBox {
         display: flex;
-        gap: 1rem;
+        gap: 1.7rem;
         & > * {
           flex: 1;
         }

@@ -15,7 +15,7 @@ const BasketballSetting = () => {
   const [initFormatClick2, setInitFormatClick2] = useState("imageDiv");
   const [name, setName] = useState("");
   const [players, setPlayers] = useState([]);
-  console.log(players);
+  // console.log(players);
 
   const groundClickHandler = () => {
     // clear another one's active
@@ -57,7 +57,7 @@ const BasketballSetting = () => {
   };
 
   return (
-    <section className="basketballSetting container section">
+    <section className="basketballSetting container section flex">
       <form method="POST" className="settingForm flex">
         <div className="logoDiv">🏀</div>
         <div className="teamNameDiv flex">

@@ -27,6 +27,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 .basketballSetting .settingForm {
   flex-direction: column;
@@ -248,9 +249,19 @@
     padding-left: 3rem;
     padding-right: 3rem;
   }
+  .basketballSetting .settingForm {
+    max-width: 1000px;
+  }
+  .basketballSetting .settingForm .teamNameDiv {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .basketballSetting .settingForm .teamNameDiv #teamName {
+    max-width: 600px;
+  }
   .basketballSetting .settingForm .firstBox {
     display: flex;
-    gap: 1rem;
+    gap: 1.7rem;
   }
   .basketballSetting .settingForm .firstBox > * {
     flex: 1;
