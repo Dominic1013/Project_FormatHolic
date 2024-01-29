@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import "./formatB.css";
 
 // import icons
@@ -15,6 +15,10 @@ import { RiFunctionLine } from "react-icons/ri";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, A11y } from "swiper/modules";
 import "swiper/swiper-bundle.css";
+
+// import konvas & use-image Hook
+import { Stage, Layer, Image, Circle } from "react-konva";
+import useImage from "use-image";
 
 // just for test swiper.js
 const testData = [
@@ -37,14 +41,28 @@ const testData = [
 ];
 
 const FormatB = () => {
-  const canvasRef = useRef(null);
-  const contextRef = useRef(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-
   // fncollection clcik event useState
   const [collectionActive, setCollectionActive] = useState(
     "fnCollection grid container"
   );
+  // Konva.js State
+  const [courtIamge] = useImage("formatBMedia/pro_court.jpeg"); // court bc
+  const [players, setPlayers] = useState([
+    { x: 100, y: 100 },
+    { x: 150, y: 150 },
+  ]); // 初始球員位置
+
+  // konva.js handleFn
+  const handleDragStart = (e, index) => {
+    const newPlayers = players.slice(); // 淺拷貝，為了不直接修改原始的 players 狀態，這是React中處理狀態的最佳實踐
+    newPlayers[index] = { ...players[index], isDragging: true }; // 更新dragging資料
+    setPlayers(newPlayers);
+  };
+  const handleDragEnd = (e, index) => {
+    const newPlayers = players.slice(); // 淺拷貝，為了不直接修改原始的 players 狀態，這是React中處理狀態的最佳實踐
+    newPlayers[index] = { x: e.target.x(), y: e.target.y(), isDragging: false }; // 更新dragging資料
+    setPlayers(newPlayers);
+  };
 
   // handle fncollection click
   const collectionClickHandler = () => {
@@ -55,69 +73,30 @@ const FormatB = () => {
     }
   };
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    // canvas.width = 500;
-    // canvas.height = 500;
-    // canvas.style.width = "500px";
-    // canvas.style.height = "500px";
-    const context = canvas.getContext("2d");
-    context.scale(2, 2);
-    context.lineCap = "round";
-    context.strokeStyle = "black";
-    context.lineWidth = 5;
-
-    contextRef.current = context;
-  }, []);
-
-  const startDrawing = ({ nativeEvent }) => {
-    const { offsetX, offsetY } = nativeEvent;
-    contextRef.current.beginPath();
-    contextRef.current.moveTo(offsetX, offsetY);
-    setIsDrawing(true);
-  };
-  const finishDrawing = () => {
-    contextRef.current.closePath();
-    setIsDrawing(false);
-  };
-  const draw = ({ nativeEvent }) => {
-    if (!isDrawing) {
-      return;
-    }
-    const { offsetX, offsetY } = nativeEvent;
-    contextRef.current.lineTo(offsetX, offsetY);
-    contextRef.current.stroke();
-    console.log("draw...");
-  };
-
   return (
-    <section className="formatB">
-      <div className="canvasContainer">
-        {/* canvas 寬高只能在這裡設定，scss設定會有bug */}
-
-        {/* 理想上lg: 800 x 480.5 */}
-        {/* 目前是sm scale(2) */}
-        {/* sm: 375 x 225.2 */}
-        <canvas
-          id="myCanvas"
-          ref={canvasRef}
-          width={375}
-          height={225.2}
-          onMouseMove={draw}
-          onMouseDown={startDrawing}
-          onMouseUp={finishDrawing}
-          style={{
-            background: `url(${"./formatBMedia/court.png"})`,
-            backgroundSize: "contain",
-            backgroundRepeat: `no-repeat`,
-          }}
-          // style={{ background: "white" }}
-        />
-        {/* <img src="./formatBMedia/court.png" alt="court" /> */}
-      </div>
-
-      {/* swiper.js */}
+    <section className="formatB flex">
+      {/* Konva.js */}
+      <section>
+        <Stage width={873} height={494}>
+          <Layer>
+            <Image image={courtIamge} width={873} height={494} />
+            {players.map((player, index) => (
+              <Circle
+                key={index}
+                x={player.x}
+                y={player.y}
+                radius={20}
+                fill="red"
+                draggable
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDragEnd={(e) => handleDragEnd(e, index)}
+              />
+            ))}
+          </Layer>
+        </Stage>
+      </section>
       {/* --------------------------------------------------- */}
+      {/* swiper.js */}
       <div className="swiperDiv">
         <Swiper
           // install Swiper modules
