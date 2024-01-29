@@ -120,12 +120,14 @@
   }
   .formatB .fnCollection {
     grid-template-columns: none;
-    grid-template-rows: repeat(6, 100px);
+    grid-template-rows: repeat(8, 50px);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     position: fixed;
     width: 100px;
     left: 0;
     z-index: 100;
-    bottom: 0;
+    bottom: 50;
   }
   .formatB .active {
     transition: all 1.5s ease-in-out;
