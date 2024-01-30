@@ -321,13 +321,3 @@ const FormatB = () => {
 };
 
 export default FormatB;
-
-{
-  /* <canvas
-id="myCanvas"
-width="320"
-height="320"
-style="background-color: black"
->
-</canvas> */
-}
