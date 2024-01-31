@@ -26,4 +26,8 @@ UPDATE(INSTALL) 2024/01/29 :
     "react-konva": "^18.2.10",
     "use-image": "^1.1.1",
 
-npm install redux-persist konva react-konva use-image
+UPDATE(INSTALL) 2024/01/30 :
+
+    "immer": "^10.0.3",
+
+npm install redux-persist konva react-konva use-image immer

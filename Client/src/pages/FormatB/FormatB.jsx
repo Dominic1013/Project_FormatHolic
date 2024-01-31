@@ -22,6 +22,9 @@ import "swiper/swiper-bundle.css";
 import { Stage, Layer, Image, Circle, Line } from "react-konva";
 import useImage from "use-image";
 
+// import immer for immutable
+import { produce } from "immer";
+
 // just for test swiper.js
 const testData = [
   {
@@ -146,27 +149,57 @@ const FormatB = () => {
     setIsEraser(false);
   };
 
-  // fnCollection - prevStep
-  const handlePrevStep = () => {
-    let newLines = lines.slice(); // 淺拷貝
-    if (newLines.length > 0) {
-      setRestore([...restore, newLines[newLines.length - 1]]); // store the pop() element to restore state
-      newLines.pop();
-      setLines(newLines);
-    }
-  };
+  // // fnCollection - prevStep
+  // const handlePrevStep = () => {
+  //   let newLines = lines.slice(); // 淺拷貝
+  //   if (newLines.length > 0) {
+  //     setRestore([...restore, newLines[newLines.length - 1]]); // store the pop() element to restore state
+  //     newLines.pop();
+  //     setLines(newLines);
+  //   }
+  // };
   // fnCollection - nextStep
-  const handleNextStep = () => {
-    if (restore.length < 1) {
+  // const handleNextStep = () => {
+  //   if (restore.length < 1) {
+  //     return;
+  //   }
+  //   let newLines = lines.slice(); // 淺拷貝
+  //   if (newLines.length > 0) {
+  //     setLines([...newLines, restore[restore.length - 1]]); // put the pop( element into lines state)
+  //     let newRestore = restore.slice(); // 淺拷貝
+  //     newRestore.pop();
+  //     setRestore(newRestore);
+  //   }
+  // };
+
+  const handlePrevStep = () => {
+    if (lines.length <= 0) {
       return;
     }
-    let newLines = lines.slice(); // 淺拷貝
-    if (newLines.length > 0) {
-      setLines([...newLines, restore[restore.length - 1]]); // put the pop( element into lines state)
-      let newRestore = restore.slice(); // 淺拷貝
-      newRestore.pop();
-      setRestore(newRestore);
+    const lastPop = lines[lines.length - 1];
+    setLines((currentLines) =>
+      produce(currentLines, (draftLines) => {
+        if (draftLines.length > 0) {
+          draftLines.pop();
+        }
+      })
+    );
+    setRestore((currentRestore) => [...currentRestore, lastPop]);
+  };
+
+  const handleNextStep = () => {
+    if (restore.length <= 0) {
+      return;
     }
+    const lastPop = restore[restore.length - 1];
+    setRestore((currentRestore) =>
+      produce(currentRestore, (draftRestore) => {
+        if (draftRestore.length > 0) {
+          draftRestore.pop();
+        }
+      })
+    );
+    setLines((currentLines) => [...currentLines, lastPop]);
   };
 
   // handle fncollection showUp
