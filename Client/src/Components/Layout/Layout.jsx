@@ -7,7 +7,8 @@ import { Outlet } from "react-router-dom";
 import { TbGridDots } from "react-icons/tb";
 import { PiSneakerMoveDuotone } from "react-icons/pi";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/user.slice";
 
 const Layout = () => {
   const { user } = useSelector((state) => state.user);
@@ -15,7 +16,7 @@ const Layout = () => {
   const [active, setActive] = useState("navbar");
   // Function to toggle navBar
   // className navbar is moveAway , activeNavbar is showUp
-
+  const dispatch = useDispatch();
   // Function to hamburger
   const changeNavbarState = () => {
     if (active === "navbar") {
@@ -50,13 +51,13 @@ const Layout = () => {
             <div className={active}>
               <ul className="navbarLists flex">
                 <li className="navItem">
-                  <a href="#" className="navLink">
+                  <a href="" className="navLink">
                     Home
                   </a>
                 </li>
 
                 <li className="navItem">
-                  <a href="#" className="navLink">
+                  <a href="" className="navLink">
                     HowToUse
                   </a>
                 </li>
@@ -91,7 +92,7 @@ const Layout = () => {
           {/* logo */}
           <header className="header flex">
             <div className="logoDiv">
-              <a href="#" className="logo flex">
+              <a href="" className="logo flex">
                 <h3>
                   <PiSneakerMoveDuotone className="icon" />
                   FormatHolic
@@ -102,25 +103,30 @@ const Layout = () => {
             <div className={active}>
               <ul className="navbarLists flex">
                 <li className="navItem">
-                  <a href="#" className="navLink">
+                  <a href="" className="navLink">
                     Home
                   </a>
                 </li>
 
                 <li className="navItem">
-                  <a href="#" className="navLink">
+                  <a href="" className="navLink">
                     HowToUse
                   </a>
                 </li>
 
                 {/* 這個應該要提交送出所有的變動 */}
                 <button className="btn">
-                  <a href="#">Save All Formation</a>
+                  <a href="">Save All Formation</a>
                 </button>
 
                 <button className="btn">
                   <a href="/storage">Check All Formation</a>
                 </button>
+
+                <button className="btn" onClick={() => dispatch(setUser(null))}>
+                  Logout
+                </button>
+
                 <div className="closeNavbar" onClick={removeNavbar}>
                   <AiFillCloseCircle className="icon" />
                 </div>

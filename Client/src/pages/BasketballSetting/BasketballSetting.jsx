@@ -104,6 +104,7 @@ const BasketballSetting = () => {
                 className="nameInput"
                 placeholder="ex: Mark or 1"
                 onChange={handleChange}
+                value={name}
               />
 
               <box onClick={handleAddPlayer}>add</box>

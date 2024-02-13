@@ -30,3 +30,6 @@ CREATE .env file:
 <!-- 改變public client baseURL -->
 
 為了我本地的 port 5000 被佔用的問題，我自己將 baseURL 調成 5001，你可以再把它改回來。
+
+//連接到 mongoDB Atlas
+MONGODB_URL = mongodb+srv://FormatHolicAdmin:WFe1BvWQukbBRVdj@cluster0.e6m5qpn.mongodb.net/?retryWrites=true&w=majority

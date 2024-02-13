@@ -67,6 +67,7 @@ const FormatB = () => {
 
   // listen window size(for Stage RWD)
   const [canvasSize, setCanvasSize] = useState({ width: 873, height: 494 });
+
   useEffect(() => {
     const checkSize = () => {
       if (window.innerWidth < 900) {
@@ -104,6 +105,7 @@ const FormatB = () => {
     newPlayers[index] = { ...players[index], isDragging: true }; // 更新dragging資料
     setPlayers(newPlayers);
   };
+
   const handleDragEnd = (e, index) => {
     const newPlayers = players.slice(); // 淺拷貝，為了不直接修改原始的 players 狀態，這是React中處理狀態的最佳實踐
     newPlayers[index] = { x: e.target.x(), y: e.target.y(), isDragging: false }; // 更新dragging資料
@@ -138,6 +140,10 @@ const FormatB = () => {
 
   const handleMouseUp = (e) => {
     setIsDrawing(false);
+  };
+
+  const handleDeleteLine = () => {
+    setLines([]);
   };
 
   // fnCollection - eraser function
@@ -247,6 +253,7 @@ const FormatB = () => {
               />
             ))}
           </Layer>
+
           {/* Painting Layer */}
           <Layer>
             {lines.map((line, index) => (
@@ -314,7 +321,7 @@ const FormatB = () => {
           {/* <p className="fnText">Save Layer</p> */}
         </div>
 
-        <div className="fnBox flex" title="Trash">
+        <div className="fnBox flex" title="Trash" onClick={handleDeleteLine}>
           <div className="circle flex">
             <FaTrash className="icon" alt="Trash Can" />
           </div>
