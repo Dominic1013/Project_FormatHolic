@@ -1,0 +1,169 @@
+@charset "UTF-8";
+:root {
+  --PrimaryColor: hsl(0, 58%, 58%);
+  --SecondaryColor: hsl(1, 65%, 75%);
+  --gradientColor: linear-gradient(
+    to right,
+    hsl(0, 58%, 58%),
+    hsl(1, 65%, 75%)
+  );
+  --logoGradientColor: linear-gradient(
+    to right,
+    hsl(0, 58%, 58%),
+    hsl(52, 91%, 46%)
+  );
+  --whiteColor: hsl(0, 0%, 100%);
+  --blackColor: hsl(201, 33%, 16%);
+  --divColor: hsl(240, 10%, 30%);
+  --divWhiteColor: hsl(0, 0%, 100%);
+  --PlaceholderColor: hsl(240, 4%, 36%);
+  --whiteColorDeam: hsl(0, 0%, 93%);
+  --TextColor: hsl(201, 33%, 16%);
+  --inputColor: rgb(239, 239, 239);
+  --bodyColor: hsl(201, 33%, 16%);
+  --NavColor: hsl(0, 0%, 85%);
+}
+
+.formatB {
+  flex-direction: column;
+  min-width: 100vw;
+  min-height: 100vh;
+  position: relative;
+  padding-top: 4rem;
+}
+.formatB .canvasContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin-bottom: 4rem;
+}
+.formatB .swiperDiv {
+  background: var(--divColor);
+  padding: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.904);
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+.formatB .swiperDiv .swiper-wrapper .swiper-slide {
+  display: flex;
+  position: relative;
+  cursor: pointer;
+}
+.formatB .swiperDiv .swiper-wrapper .swiper-slide:hover {
+  border: 2px solid var(--PrimaryColor);
+}
+.formatB .fnCollection {
+  grid-template-columns: repeat(8, 1fr);
+  align-items: center;
+  justify-content: center;
+  background: var(--divColor);
+  border-radius: 10px;
+  gap: 0.75rem;
+}
+.formatB .fnCollection .fnBox {
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.formatB .fnCollection .fnBox .fnText {
+  text-align: center;
+  color: var(--whiteColorDeam);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+.formatB .fnCollection .fnBox .circle {
+  background: var(--whiteColor);
+  width: 40px;
+  height: 40px;
+  -webkit-clip-path: circle();
+          clip-path: circle();
+  justify-content: center;
+  align-items: center;
+}
+.formatB .fnCollection .fnBox .circle:hover {
+  background: var(--logoGradientColor);
+}
+.formatB .fnCollection .fnBox .circle .icon {
+  align-self: center;
+  justify-content: center;
+  color: var(--blackColor);
+  font-size: 1.5rem;
+}
+
+@media screen and (min-width: 768px) {
+  .formatB {
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .formatB .canvasContainer {
+    max-width: 800px;
+    margin: auto;
+    margin-bottom: 4rem;
+  }
+  .formatB .canvasContainer canvas {
+    transform: scale(2);
+  }
+  .formatB .swiperDiv {
+    width: 70%;
+    height: 20vh;
+    margin: auto;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+  }
+  .formatB .swiperDiv div .cldImage {
+    max-width: 100%; /* 讓圖片自適應父元素的大小 */
+    height: auto; /* 保持圖片的原始高寬比 */
+  }
+  .formatB .fnCollection {
+    grid-template-columns: none;
+    grid-template-rows: repeat(8, 50px);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    position: fixed;
+    width: 100px;
+    left: 0;
+    z-index: 100;
+    bottom: 50;
+    transition: all 1.5s ease-in-out;
+  }
+  .formatB .active {
+    transition: all 1.5s ease-in-out;
+    left: -500rem;
+  }
+  .formatB .toggleContainer {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    width: -moz-max-content;
+    width: max-content;
+    background: white;
+    font-size: 1rem;
+    border-radius: 5px;
+  }
+  .formatB .toggleContainer:hover {
+    background: var(--logoGradientColor);
+  }
+}
+@media screen and (max-width: 767px) {
+  .formatB .swiperDiv {
+    width: 100%;
+  }
+  .formatB .toggleContainer {
+    display: none;
+  }
+}
+@media screen and (max-width: 465px) {
+  .formatB .fnCollection {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}/*# sourceMappingURL=formatB.css.map */

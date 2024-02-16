@@ -183,10 +183,18 @@
     }
 
     .swiperDiv {
-      max-width: 800px;
+      //max-width: 800px;
+      width: 70%;
+      height: 20vh;
       margin: auto;
       margin-bottom: 2rem;
       border-radius: 10px;
+      div {
+        .cldImage {
+          max-width: 100%; /* 讓圖片自適應父元素的大小 */
+          height: auto; /* 保持圖片的原始高寬比 */
+        }
+      }
     }
 
     .fnCollection {
