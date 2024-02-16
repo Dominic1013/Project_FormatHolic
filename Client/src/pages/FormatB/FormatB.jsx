@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./formatB.css";
+import axios from "axios";
 
 // import icons
 import { MdOutlineDataSaverOn } from "react-icons/md";
@@ -65,8 +66,13 @@ const FormatB = () => {
   // for prevStep & nextStep state
   const [restore, setRestore] = useState([]);
 
+  //for cloudinary image
+  const [saveImageUrl, setSaveImageUrl] = useState([]);
+
   // listen window size(for Stage RWD)
   const [canvasSize, setCanvasSize] = useState({ width: 873, height: 494 });
+
+  const stageRef = React.useRef(null);
 
   useEffect(() => {
     const checkSize = () => {
@@ -155,6 +161,49 @@ const FormatB = () => {
     setIsEraser(false);
   };
 
+  //測試下載功能
+  const uploadToCloudinary = async (base64Image) => {
+    try {
+      // 使用 Axios 將 Base64 圖片的數據獲取為 Blob
+      const response = await axios.get(base64Image, {
+        responseType: "blob",
+      });
+
+      // 創建一個 FormData 對象
+      const formData = new FormData();
+      formData.append("file", response.data);
+      formData.append("upload_preset", "g4ttb664");
+      formData.append("folder", "FormatHolic");
+
+      // 發送 POST 請求到 Cloudinary 的上傳端點
+      const uploadResponse = await axios.post(
+        `https://api.cloudinary.com/v1_1/dpegsgk4s/upload`,
+        formData
+      );
+
+      // 解析 JSON 響應，並返回上傳的圖片 URL
+      return uploadResponse.data.secure_url;
+    } catch (error) {
+      console.error("Error uploading image to Cloudinary:", error);
+      return null;
+    }
+  };
+
+  const handleSaveImage = async () => {
+    const base64Image = stageRef.current.toDataURL();
+
+    const imageFromCloudinary = await uploadToCloudinary(base64Image);
+
+    const newImage = {
+      id: Date.now(),
+      image_path: imageFromCloudinary,
+    };
+
+    setSaveImageUrl([...saveImageUrl, newImage]);
+
+    console.log("Upload succeed");
+  };
+
   // // fnCollection - prevStep
   // const handlePrevStep = () => {
   //   let newLines = lines.slice(); // 淺拷貝
@@ -227,6 +276,7 @@ const FormatB = () => {
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
+          ref={stageRef}
         >
           {/* Layer split two layer, */}
           {/* Background Layer */}
@@ -280,6 +330,7 @@ const FormatB = () => {
       </div>
       {/* --------------------------------------------------- */}
       {/* swiper.js */}
+
       <div className="swiperDiv">
         <Swiper
           // install Swiper modules
@@ -287,18 +338,18 @@ const FormatB = () => {
           spaceBetween={20}
           slidesPerView={3}
           navigation
-          onSwiper={(swiper) => console.log(swiper)}
-          onSlideChange={() => console.log("slide change")}
         >
-          {testData.map((data, index) => {
-            return (
-              <SwiperSlide key={index}>
-                <img src={data.image} alt="" />
+          {saveImageUrl &&
+            saveImageUrl.map((data) => (
+              <SwiperSlide key={data.id}>
+                <div>
+                  <img className="cldImage" src={data.image_path} alt="" />
+                </div>
               </SwiperSlide>
-            );
-          })}
+            ))}
         </Swiper>
       </div>
+
       {/* --------------------------------------------------- */}
 
       <div className={collectionActive}>
@@ -316,7 +367,11 @@ const FormatB = () => {
         </div>
         <div className="fnBox flex" title="Layer">
           <div className="circle flex">
-            <MdOutlineDataSaverOn className="icon" alt="Save Layer" />
+            <MdOutlineDataSaverOn
+              className="icon"
+              alt="Save Layer"
+              onClick={handleSaveImage}
+            />
           </div>
           {/* <p className="fnText">Save Layer</p> */}
         </div>

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 :root {
   --PrimaryColor: hsl(0, 58%, 58%);
   --SecondaryColor: hsl(1, 65%, 75%);
@@ -114,10 +115,15 @@
     transform: scale(2);
   }
   .formatB .swiperDiv {
-    max-width: 800px;
+    width: 70%;
+    height: 20vh;
     margin: auto;
     margin-bottom: 2rem;
     border-radius: 10px;
+  }
+  .formatB .swiperDiv div .cldImage {
+    max-width: 100%; /* 讓圖片自適應父元素的大小 */
+    height: auto; /* 保持圖片的原始高寬比 */
   }
   .formatB .fnCollection {
     grid-template-columns: none;
