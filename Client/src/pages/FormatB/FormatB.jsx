@@ -124,18 +124,33 @@ const FormatB = () => {
     ]);
   };
 
+  // const handleMouseMove = (e) => {
+  //   if (!isDrawing) {
+  //     return;
+  //   }
+  //   const stage = e.target.getStage();
+  //   const point = stage.getPointerPosition();
+  //   let lastLine = lines[lines.length - 1];
+  //   lastLine.points = lastLine.points.concat([point.x, point.y]);
+
+  //   setLines(lines.concat());
+  //   // bc we change the data didnt with setState,react didnt know the change,
+  //   // create a copy to useState, let it know state is changed.
+  // };
+
   const handleMouseMove = (e) => {
     if (!isDrawing) {
       return;
     }
     const stage = e.target.getStage();
     const point = stage.getPointerPosition();
-    let lastLine = lines[lines.length - 1];
-    lastLine.points = lastLine.points.concat([point.x, point.y]);
-
-    setLines(lines.concat());
-    // bc we change the data didnt with setState,react didnt know the change,
-    // create a copy to useState, let it know state is changed.
+    setLines((currentLines) => {
+      return produce(currentLines, (draftLines) => {
+        let lastLine = draftLines[draftLines.length - 1];
+        lastLine.points = lastLine.points.concat([point.x, point.y]);
+        // lastLine.points.push(point.x, point.y); //也可以使用mutable method
+      });
+    });
   };
 
   const handleMouseUp = (e) => {
