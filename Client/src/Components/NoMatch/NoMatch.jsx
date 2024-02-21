@@ -1,5 +1,5 @@
 import React from "react";
-import "./noMatch.css";
+import "./noMatch.scss";
 
 const NoMatch = () => {
   return <div>NoMatch</div>;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./storage.css";
+import "./storage.scss";
 
 // import icons
 import { FaSave } from "react-icons/fa";

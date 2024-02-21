@@ -1,5 +1,5 @@
 import React from "react";
-import "./home.css";
+import "./home.scss";
 
 // import icons
 import { FaBookMedical } from "react-icons/fa";

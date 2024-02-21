@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import "./layout.css";
+import "./layout.scss";
 import { Outlet } from "react-router-dom";
 
 // import icons

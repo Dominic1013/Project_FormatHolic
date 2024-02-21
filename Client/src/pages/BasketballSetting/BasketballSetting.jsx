@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./basketballSetting.css";
+import "./basketballSetting.scss";
 
 const BasketballSetting = () => {
   // Function For groundClick Event

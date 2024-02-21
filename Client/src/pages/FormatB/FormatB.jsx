@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./formatB.css";
+import "./formatB.scss";
 
 // import icons
 import { MdOutlineDataSaverOn } from "react-icons/md";
