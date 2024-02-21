@@ -1,64 +1,120 @@
+// planA is your code for add person
+// planB is my code for add person
+
 import React, { useState } from "react";
 import "./basketballSetting.scss";
 
 const BasketballSetting = () => {
   // Function For groundClick Event
-  const [fullGroundClick, setFullGroundClick] = useState(
-    "imageDiv groundActive"
-  );
-  const [halfGroundClick, setHalfGroundClick] = useState("imageDiv");
+  const [fullGroundClass, setFullGroundClass] = useState(true);
+  const [halfGroundClass, setHalfGroundClass] = useState(false);
 
   // Function For initFormatClick Event
-  const [initFormatClick1, setInitFormatClick1] = useState(
-    "imageDiv initFormatActive"
-  );
-  const [initFormatClick2, setInitFormatClick2] = useState("imageDiv");
-  const [name, setName] = useState("");
-  const [players, setPlayers] = useState([]);
+  const [sideClass, setSideClass] = useState(true);
+  const [onStageClass, setOnStageClass] = useState(false);
+
+  //planA
+  // const [name, setName] = useState("");
+  // const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState("");
   // console.log(players);
+  // console.log(typeof players);
 
-  const groundClickHandler = () => {
-    // clear another one's active
-    if (fullGroundClick === "imageDiv") {
-      setHalfGroundClick("imageDiv");
-      setFullGroundClick("imageDiv  groundActive");
-    } else {
-      setHalfGroundClick("imageDiv groundActive");
-      setFullGroundClick("imageDiv");
+  const [settingInfo, setSettingInfo] = useState({
+    teamName: "1",
+    memberNumber: "3", // turn to number to calc for formatB
+    groundSize: "half", // or full
+    memberInfo: [],
+    initFormat: "side", // or onStage
+  });
+  console.log(settingInfo);
+
+  // console.log(Number(settingInfo.memberNumber));
+  // console.log(typeof Number(settingInfo.memberNumber));
+
+  const handleAllChange = (e) => {
+    console.log(e.target.id);
+    if (e.target.id === "teamName") {
+      // console.log("success");
+      setSettingInfo({ ...settingInfo, teamName: e.target.value });
     }
-  };
-
-  const initFormatClick1Handler = () => {
-    // clear another one's active
-    if (initFormatClick1 === "imageDiv") {
-      setInitFormatClick2("imageDiv");
-      setInitFormatClick1("imageDiv initFormatActive");
-    } else {
-      setInitFormatClick1("imageDiv");
-      setInitFormatClick2("imageDiv initFormatActive");
+    if (e.target.id === "person") {
+      // console.log("success");
+      setSettingInfo({ ...settingInfo, memberNumber: e.target.value });
+      setPlayers(e.target.value);
     }
+
+    //groundSize in handlefullGroundClick & handlehalfGroundClick
+
+    // memberInfo
+
+    // if(e.target.key ===)
+
+    //initFormat in handleSideClassClick & handleOnStageClick
   };
 
-  const handleChange = (e) => {
-    setName(e.target.value);
+  const handleInput = (index, field, value) => {
+    setSettingInfo((prevSettingInfo) => {
+      const newMemberInfo = [...prevSettingInfo.memberInfo];
+      if (!newMemberInfo[index]) {
+        // default value
+        newMemberInfo[index] = { name: "", color: "#000000" };
+      }
+      newMemberInfo[index][field] = value;
+
+      return { ...prevSettingInfo, memberInfo: newMemberInfo };
+    });
   };
 
-  const handleAddPlayer = () => {
-    if (name.trim() !== "") {
-      const newPlayers = { id: Date.now(), name: name };
-      setPlayers([...players, newPlayers]);
-      setName("");
-    }
+  const handlefullGroundClick = () => {
+    setFullGroundClass(true);
+    setHalfGroundClass(false);
+    setSettingInfo({ ...settingInfo, groundSize: "full" });
   };
 
-  const handleRemove = (id) => {
-    const newPlayers = players.filter((player) => player.id !== id);
-    setPlayers(newPlayers);
+  const handlehalfGroundClick = () => {
+    setFullGroundClass(false);
+    setHalfGroundClass(true);
+    setSettingInfo({ ...settingInfo, groundSize: "half" });
   };
+
+  const handleSideClassClick = () => {
+    setSideClass(true);
+    setOnStageClass(false);
+    setSettingInfo({ ...settingInfo, initFormat: "side" });
+  };
+
+  const handleOnStageClick = () => {
+    setSideClass(false);
+    setOnStageClass(true);
+    setSettingInfo({ ...settingInfo, initFormat: "onStage" });
+  };
+
+  // // planA
+  // const handleChange = (e) => {
+  //   setName(e.target.value);
+  // };
+  // // planA
+  // const handleAddPlayer = () => {
+  //   if (name.trim() !== "") {
+  //     const newPlayers = { id: Date.now(), name: name };
+  //     setPlayers([...players, newPlayers]);
+  //     setName("");
+  //   }
+  // };
+  // // planA
+  // const handleRemove = (id) => {
+  //   const newPlayers = players.filter((player) => player.id !== id);
+  //   setPlayers(newPlayers);
+  // };
 
   return (
     <section className="basketballSetting container section flex">
-      <form method="POST" className="settingForm flex">
+      <form
+        onChange={handleAllChange}
+        method="POST"
+        className="settingForm flex"
+      >
         <div className="logoDiv">🏀</div>
         <div className="teamNameDiv flex">
           <input type="text" id="teamName" placeholder="Enter Your Team Name" />
@@ -80,11 +136,21 @@ const BasketballSetting = () => {
 
             {/* add images */}
             <div className="imageDivs flex">
-              <div className={fullGroundClick} onClick={groundClickHandler}>
+              <div
+                className={
+                  fullGroundClass ? "imageDiv groundActive" : "imageDiv"
+                }
+                onClick={handlefullGroundClick}
+              >
                 <img src="/settingMedia/ground_full.jpg" alt="ground_full" />
               </div>
 
-              <div className={halfGroundClick} onClick={groundClickHandler}>
+              <div
+                className={
+                  halfGroundClass ? "imageDiv groundActive" : "imageDiv"
+                }
+                onClick={handlehalfGroundClick}
+              >
                 <img
                   src="/settingMedia/ground_fullOverlay.jpg"
                   alt="ground_half"
@@ -98,7 +164,32 @@ const BasketballSetting = () => {
             <label for="nameColor" className="icon">
               🎨
             </label>
-            <div className="nameColorInputs grid">
+
+            {/* planB */}
+            <div className="nameColorInputs">
+              {Array.from({ length: Number(players) }, (_, index) => (
+                <div className="nameColorInput grid" key={index}>
+                  <input
+                    type="text"
+                    className="nameInput"
+                    placeholder="ex: Mark or 1"
+                    value={settingInfo.memberInfo[index]?.name || ""}
+                    onChange={(e) => handleInput(index, "name", e.target.value)}
+                  />
+                  <input
+                    type="color"
+                    className="colorInput"
+                    value={settingInfo.memberInfo[index]?.color || "#000000"}
+                    onChange={(e) =>
+                      handleInput(index, "color", e.target.value)
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* planA */}
+            {/* <div className="nameColorInputs grid">
               <input
                 type="text"
                 className="nameInput"
@@ -122,7 +213,7 @@ const BasketballSetting = () => {
                     delete
                   </box>
                 </div>
-              ))}
+              ))} */}
           </div>
 
           {/* add images */}
@@ -132,22 +223,24 @@ const BasketballSetting = () => {
             {/* add images */}
             <div className="imageDivs flex">
               <div
-                className={initFormatClick1}
-                onClick={initFormatClick1Handler}
+                className={sideClass ? "imageDiv initFormatActive" : "imageDiv"}
+                onClick={handleSideClassClick}
               >
                 <img
                   src="/settingMedia/ground_initFormat.jpg"
-                  alt="ground_initFormat"
+                  alt="ground_sideClass"
                 />
               </div>
 
               <div
-                className={initFormatClick2}
-                onClick={initFormatClick1Handler}
+                className={
+                  onStageClass ? "imageDiv initFormatActive" : "imageDiv"
+                }
+                onClick={handleOnStageClick}
               >
                 <img
                   src="/settingMedia/ground_initFormat2.jpg"
-                  alt="ground_initFormat2"
+                  alt="ground_onStageClass"
                 />
               </div>
             </div>
