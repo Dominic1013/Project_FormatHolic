@@ -7,8 +7,11 @@ import "./basketballSetting.scss";
 
 // Context for settingInfo pass
 import { useSetting } from "../../SettingInfoContext";
+import { useNavigate } from "react-router-dom";
 
 const BasketballSetting = () => {
+  const navigate = useNavigate();
+
   // Function For groundClick Event
   const [fullGroundClass, setFullGroundClass] = useState(true);
   const [halfGroundClass, setHalfGroundClass] = useState(false);
@@ -68,7 +71,7 @@ const BasketballSetting = () => {
   const handleBlur = () => {
     //當用戶沒有點擊在person input時，如果person input為空，設為default值為1
     if (PersonValue === "") {
-      setPersonValue("1"); // 如果为空，则设置为最小值1
+      setPersonValue("1"); // 如果為空，設為1
       setPersonWarning(false);
     }
   };
@@ -78,7 +81,7 @@ const BasketballSetting = () => {
       const newMemberInfo = [...prevSettingInfo.memberInfo];
       if (!newMemberInfo[index]) {
         // default value
-        newMemberInfo[index] = { name: "", color: "#000000" };
+        newMemberInfo[index] = { name: "", color: "#D25656" };
       }
       newMemberInfo[index][field] = value;
 
@@ -127,6 +130,15 @@ const BasketballSetting = () => {
   //   const newPlayers = players.filter((player) => player.id !== id);
   //   setPlayers(newPlayers);
   // };
+
+  const handleButton = (e) => {
+    e.preventDefault();
+    console.log("ready");
+    if (settingInfo.teamName && settingInfo.memberNumber) {
+      navigate("/settings/FormatB");
+      console.log("success");
+    }
+  };
 
   return (
     // <SettingProvider>
@@ -212,7 +224,7 @@ const BasketballSetting = () => {
                     <input
                       type="color"
                       className="colorInput"
-                      value={settingInfo.memberInfo[index]?.color || "#000000"}
+                      value={settingInfo.memberInfo[index]?.color || "#D25656"}
                       onChange={(e) =>
                         handleInput(index, "color", e.target.value)
                       }
@@ -281,7 +293,9 @@ const BasketballSetting = () => {
           </div>
         </div>
 
-        <button className="allSubmit btn">All Submit</button>
+        <button className="allSubmit btn" onClick={handleButton}>
+          All Submit
+        </button>
       </form>
     </section>
     // </SettingProvider>

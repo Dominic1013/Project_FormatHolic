@@ -25,6 +25,9 @@ import useImage from "use-image";
 // import immer for immutable
 import { produce } from "immer";
 
+// // Context for settingInfo pass
+import { useSetting } from "../../SettingInfoContext";
+
 // just for test swiper.js
 const testData = [
   {
@@ -46,6 +49,9 @@ const testData = [
 ];
 
 const FormatB = () => {
+  // state from BasketballSetting.jsx
+  const { settingInfo, setSettingInfo } = useSetting();
+
   // fncollection clcik event useState
   const [collectionActive, setCollectionActive] = useState(
     "fnCollection grid container"

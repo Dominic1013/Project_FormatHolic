@@ -7,8 +7,8 @@ export const useSetting = () => useContext(SettingContext);
 
 export const SettingProvider = ({ children }) => {
   const [settingInfo, setSettingInfo] = useState({
-    teamName: "1",
-    memberNumber: "3", // turn to number to calc for formatB
+    teamName: "",
+    memberNumber: "", // turn to number to calc for formatB
     groundSize: "half", // or full
     memberInfo: [],
     initFormat: "side", // or onStage
