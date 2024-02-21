@@ -7,7 +7,7 @@ import { FaTrash } from "react-icons/fa6";
 import { FaPersonCirclePlus } from "react-icons/fa6";
 import { IoArrowUndoSharp } from "react-icons/io5";
 import { IoArrowRedo } from "react-icons/io5";
-import { IoMdSettings } from "react-icons/io";
+import { FaComputerMouse } from "react-icons/fa6";
 import { FaPencilAlt } from "react-icons/fa";
 import { FaEraser } from "react-icons/fa";
 
@@ -66,6 +66,8 @@ const FormatB = () => {
   const [circleRadius, setCircleRadius] = useState(20);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isEraser, setIsEraser] = useState(false);
+  const [isMouse, setIsMouse] = useState(true);
+  const [isPen, setisPen] = useState(false);
   // for prevStep & nextStep state
   const [restore, setRestore] = useState([]);
 
@@ -169,14 +171,22 @@ const FormatB = () => {
 
   // handle drawing with mouse
   const handleMouseDown = (e) => {
-    setIsDrawing(true);
-    //獲取mouse在畫布stage上的當前位置，這是konva.js的方法，用於獲取舞台（stage）相對於畫布的座標位置。
-    const position = e.target.getStage().getPointerPosition();
-    // setLines([...lines, { points: [position.x, position.y], tool: "pen" }]);
-    setLines([
-      ...lines,
-      { points: [position.x, position.y], tool: isEraser ? "eraser" : "pen" },
-    ]);
+    if (isMouse) {
+      return;
+    } else {
+      setIsDrawing(true);
+      //獲取mouse在畫布stage上的當前位置，這是konva.js的方法，用於獲取舞台（stage）相對於畫布的座標位置。
+      const position = e.target.getStage().getPointerPosition();
+
+      setLines([
+        ...lines,
+        { points: [position.x, position.y], tool: isEraser ? "eraser" : "pen" },
+        // {
+        //   points: [position.x, position.y],
+        //   tool: isEraser ? "eraser" : isPen ? "pen" : "",
+        // },
+      ]);
+    }
   };
 
   // const handleMouseMove = (e) => {
@@ -223,10 +233,16 @@ const FormatB = () => {
   // fnCollection - eraser function
   const switchToEraser = () => {
     setIsEraser(true);
+    setIsMouse(false);
   };
   // fnCollection - pen function
   const switchToPen = () => {
     setIsEraser(false);
+    setIsMouse(false);
+  };
+
+  const switchToMouse = () => {
+    setIsMouse(true);
   };
 
   // ------------------------------
@@ -415,6 +431,14 @@ const FormatB = () => {
           </div>
           {/* <p className="fnText">Pen</p> */}
         </div>
+
+        <div className="fnBox flex" title="Mouse" onClick={switchToMouse}>
+          <div className="circle flex">
+            <FaComputerMouse className="icon" alt="Mouse" />
+          </div>
+          {/* <p className="fnText">Settings</p> */}
+        </div>
+
         <div className="fnBox flex" title="Layer">
           <div className="circle flex">
             <MdOutlineDataSaverOn className="icon" alt="Save Layer" />
@@ -448,13 +472,6 @@ const FormatB = () => {
             <IoArrowRedo className="icon" alt="Next Step" />
           </div>
           {/* <p className="fnText">Next Step</p> */}
-        </div>
-
-        <div className="fnBox flex" title="Setting">
-          <div className="circle flex">
-            <IoMdSettings className="icon" alt="Setting" />
-          </div>
-          {/* <p className="fnText">Settings</p> */}
         </div>
       </div>
     </section>
