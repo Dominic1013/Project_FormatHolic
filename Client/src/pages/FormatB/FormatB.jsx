@@ -67,7 +67,7 @@ const FormatB = () => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [isEraser, setIsEraser] = useState(false);
   const [isMouse, setIsMouse] = useState(true);
-  const [isPen, setisPen] = useState(false);
+
   // for prevStep & nextStep state
   const [restore, setRestore] = useState([]);
 

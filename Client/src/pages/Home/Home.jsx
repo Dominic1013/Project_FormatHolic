@@ -3,6 +3,7 @@ import "./home.scss";
 
 // import icons
 import { FaBookMedical } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -25,7 +26,7 @@ const Home = () => {
             loop
           ></video>
           <button className="choose btn flex">
-            <a href="#">Dance</a>
+            <Link to="/">Dance</Link>
           </button>
         </div>
 
@@ -39,7 +40,7 @@ const Home = () => {
             loop
           ></video>
           <button className="choose btn flex">
-            <a href="/basketballSetting">Basketball</a>
+            <Link to="settings/basketballSetting">Basketball</Link>
           </button>
         </div>
       </div>
