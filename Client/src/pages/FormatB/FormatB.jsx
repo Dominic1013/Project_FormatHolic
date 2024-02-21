@@ -32,19 +32,19 @@ import { useSetting } from "../../SettingInfoContext";
 const testData = [
   {
     id: 1,
-    image: "./settingMedia/ground_initFormat.jpg",
+    image: "/settingMedia/ground_initFormat.jpg",
   },
   {
     id: 2,
-    image: "./settingMedia/ground_initFormat2.jpg",
+    image: "/settingMedia/ground_initFormat2.jpg",
   },
   {
     id: 3,
-    image: "./settingMedia/ground_initFormat.jpg",
+    image: "/settingMedia/ground_initFormat.jpg",
   },
   {
     id: 4,
-    image: "./settingMedia/ground_initFormat.jpg",
+    image: "/settingMedia/ground_initFormat.jpg",
   },
 ];
 
@@ -58,10 +58,27 @@ const FormatB = () => {
   );
   // Konva.js State
   const [courtIamge] = useImage("/formatBMedia/pro_court.jpeg"); // court backgroundImage
-  const [players, setPlayers] = useState([
-    { x: 100, y: 100 },
-    { x: 150, y: 150 },
-  ]); // 初始球員位置
+  // const [players, setPlayers] = useState([
+  //   { x: 100, y: 100 },
+  //   { x: 150, y: 150 },
+  // ]); // 初始球員位置
+
+  const playersX = () => {
+    if (settingInfo.initFormat === "side") {
+      return 100;
+    } else {
+      return 450;
+    }
+  };
+
+  const [players, setPlayers] = useState(
+    Array.from({ length: Number(settingInfo.memberNumber) }, (player, i) => ({
+      x: playersX(),
+      y: 40 * (i + 1),
+    }))
+  ); // 初始球員位置
+  // console.log(players);
+
   // drawing lines state
   const [lines, setLines] = useState([]);
   // for players circle RWD
@@ -314,7 +331,7 @@ const FormatB = () => {
           {testData.map((data, index) => {
             return (
               <SwiperSlide key={index}>
-                <img src={data.image} alt="" />
+                <img src={data.image} alt="img" />
               </SwiperSlide>
             );
           })}
