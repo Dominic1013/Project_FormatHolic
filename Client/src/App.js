@@ -9,6 +9,7 @@ import Register from "./pages/Register/Register";
 import Storage from "./pages/Storage/Storage";
 import BasketballSetting from "./pages/BasketballSetting/BasketballSetting";
 import FormatB from "./pages/FormatB/FormatB";
+import SettingInfoRoute from "./Components/SettingInfoRoute/SettingInfoRoute";
 
 function App() {
   return (
@@ -21,8 +22,9 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route element={<PrivateRoute />}>
               <Route path="storage" element={<Storage />} />
-              <Route path="basketballSetting" element={<BasketballSetting />} />
-              <Route path="formatB" element={<FormatB />} />
+              <Route path="settings/*" element={<SettingInfoRoute />} />
+              {/* <Route path="basketballSetting" element={<BasketballSetting />} />
+              <Route path="formatB" element={<FormatB />} /> */}
             </Route>
             <Route path="*" element={<NoMatch />} />
           </Route>

@@ -2,7 +2,11 @@
 // planB is my code for add person
 
 import React, { useState } from "react";
+
 import "./basketballSetting.scss";
+
+// Context for settingInfo pass
+import { useSetting } from "../../SettingInfoContext";
 
 const BasketballSetting = () => {
   // Function For groundClick Event
@@ -17,40 +21,56 @@ const BasketballSetting = () => {
   // const [name, setName] = useState("");
   // const [players, setPlayers] = useState([]);
   const [players, setPlayers] = useState("");
-  // console.log(players);
-  // console.log(typeof players);
 
-  const [settingInfo, setSettingInfo] = useState({
-    teamName: "1",
-    memberNumber: "3", // turn to number to calc for formatB
-    groundSize: "half", // or full
-    memberInfo: [],
-    initFormat: "side", // or onStage
-  });
-  console.log(settingInfo);
+  const { settingInfo, setSettingInfo } = useSetting();
+  const [PersonValue, setPersonValue] = useState("");
+  const [personWarning, setPersonWarning] = useState(false);
 
-  // console.log(Number(settingInfo.memberNumber));
-  // console.log(typeof Number(settingInfo.memberNumber));
+  // console.log(settingInfo);
 
   const handleAllChange = (e) => {
-    console.log(e.target.id);
+    // console.log(e.target.id);
     if (e.target.id === "teamName") {
-      // console.log("success");
       setSettingInfo({ ...settingInfo, teamName: e.target.value });
     }
     if (e.target.id === "person") {
-      // console.log("success");
-      setSettingInfo({ ...settingInfo, memberNumber: e.target.value });
-      setPlayers(e.target.value);
+      const val = e.target.value;
+
+      // 允許用戶刪除數字，並且暫時留空
+      if (val === "") {
+        setPersonValue(val);
+        setSettingInfo({ ...settingInfo, memberNumber: val });
+        setPlayers(val);
+        return;
+      }
+
+      // 檢查person input是否為數字
+      const num = Number(val);
+      if (!isNaN(num) && num >= 1 && num <= 10) {
+        setPersonValue(val);
+        setSettingInfo({ ...settingInfo, memberNumber: val });
+        setPlayers(val);
+        setPersonWarning(false);
+      } else if (!isNaN(num) && (num < 1 || num > 10)) {
+        //如果數字不在1-10之間，不更新value，但不阻止使用者刪除數字
+        //出現Warning Text
+        setPersonWarning(true);
+      }
+
+      // 更新state
+      setPersonValue(val);
     }
 
     //groundSize in handlefullGroundClick & handlehalfGroundClick
-
-    // memberInfo
-
-    // if(e.target.key ===)
-
     //initFormat in handleSideClassClick & handleOnStageClick
+  };
+
+  const handleBlur = () => {
+    //當用戶沒有點擊在person input時，如果person input為空，設為default值為1
+    if (PersonValue === "") {
+      setPersonValue("1"); // 如果为空，则设置为最小值1
+      setPersonWarning(false);
+    }
   };
 
   const handleInput = (index, field, value) => {
@@ -109,6 +129,7 @@ const BasketballSetting = () => {
   // };
 
   return (
+    // <SettingProvider>
     <section className="basketballSetting container section flex">
       <form
         onChange={handleAllChange}
@@ -125,10 +146,18 @@ const BasketballSetting = () => {
               ⛹️‍♂️
             </label>
             <input
-              type="text"
+              type="number"
               id="person"
               placeholder="Enter Your Member Number"
+              max="10"
+              value={PersonValue}
+              onBlur={handleBlur}
             />
+            {personWarning ? (
+              <p className="personWarning">Must enter a number between 1-10</p>
+            ) : (
+              ""
+            )}
           </div>
 
           <div className="groundDiv flex ">
@@ -167,25 +196,30 @@ const BasketballSetting = () => {
 
             {/* planB */}
             <div className="nameColorInputs">
-              {Array.from({ length: Number(players) }, (_, index) => (
-                <div className="nameColorInput grid" key={index}>
-                  <input
-                    type="text"
-                    className="nameInput"
-                    placeholder="ex: Mark or 1"
-                    value={settingInfo.memberInfo[index]?.name || ""}
-                    onChange={(e) => handleInput(index, "name", e.target.value)}
-                  />
-                  <input
-                    type="color"
-                    className="colorInput"
-                    value={settingInfo.memberInfo[index]?.color || "#000000"}
-                    onChange={(e) =>
-                      handleInput(index, "color", e.target.value)
-                    }
-                  />
-                </div>
-              ))}
+              {Array.from(
+                { length: Number(players) ? Number(players) : 1 },
+                (_, index) => (
+                  <div className="nameColorInput grid" key={index}>
+                    <input
+                      type="text"
+                      className="nameInput"
+                      placeholder="ex: Mark or 1"
+                      value={settingInfo.memberInfo[index]?.name || ""}
+                      onChange={(e) =>
+                        handleInput(index, "name", e.target.value)
+                      }
+                    />
+                    <input
+                      type="color"
+                      className="colorInput"
+                      value={settingInfo.memberInfo[index]?.color || "#000000"}
+                      onChange={(e) =>
+                        handleInput(index, "color", e.target.value)
+                      }
+                    />
+                  </div>
+                )
+              )}
             </div>
 
             {/* planA */}
@@ -250,6 +284,7 @@ const BasketballSetting = () => {
         <button className="allSubmit btn">All Submit</button>
       </form>
     </section>
+    // </SettingProvider>
   );
 };
 
