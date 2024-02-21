@@ -60,25 +60,6 @@ const FormatB = () => {
   const [courtIamge] = useImage("/formatBMedia/pro_court.jpeg"); // court backgroundImage
   const [courtIamge_half] = useImage("/formatBMedia/pro_court_half.jpeg"); // court half backgroundImage
 
-  const playersX = () => {
-    if (settingInfo.initFormat === "side") {
-      return 100;
-    } else {
-      return 450;
-    }
-  };
-
-  const [players, setPlayers] = useState(
-    Array.from({ length: Number(settingInfo.memberNumber) }, (player, i) => ({
-      x: playersX(),
-      y: 40 * (i + 1),
-      name: settingInfo.memberInfo[i]?.name,
-      color: settingInfo.memberInfo[i]?.color,
-      isDragging: false,
-    }))
-  ); // 初始球員位置
-  // console.log(players);
-
   // drawing lines state
   const [lines, setLines] = useState([]);
   // for players circle RWD
@@ -90,6 +71,46 @@ const FormatB = () => {
 
   // listen window size(for Stage RWD)
   const [canvasSize, setCanvasSize] = useState({ width: 873, height: 494 });
+
+  // -------------------------------
+  //for circle X
+  const playersX = () => {
+    if (settingInfo.initFormat === "side") {
+      return 100;
+    } else {
+      return 450;
+    }
+  };
+  // for circle y
+  const checkIsWindowSm = () => window.innerWidth < 500;
+  const [isWindowSm, setIsWindowSm] = useState(checkIsWindowSm());
+
+  const playersY = (i) => {
+    return isWindowSm ? 20 * (i + 1) : 40 * (i + 1);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsWindowSm(checkIsWindowSm());
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const [players, setPlayers] = useState(
+    Array.from({ length: Number(settingInfo.memberNumber) }, (player, i) => ({
+      x: playersX(),
+      y: playersY(i) || 20,
+      name: settingInfo.memberInfo[i]?.name || "",
+      color: settingInfo.memberInfo[i]?.color || "#D25656",
+      isDragging: false,
+    }))
+  ); // 初始球員位置
+
+  // -------------------------------
 
   useEffect(() => {
     const checkSize = () => {
@@ -107,6 +128,7 @@ const FormatB = () => {
       if (window.innerWidth < 500) {
         setCanvasSize({ width: 300, height: 170 });
         setCircleRadius(10);
+        setIsWindowSm(true);
       }
       if (window.innerWidth > 900) {
         setCanvasSize({ width: 873, height: 494 });
