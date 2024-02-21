@@ -143,6 +143,7 @@ const FormatB = () => {
     checkSize();
   }, []);
 
+  // ----------------------------Drag event
   // konva.js handleFn
   // handle drag move with player cicle
   const handleDragStart = (e, index) => {
@@ -161,6 +162,10 @@ const FormatB = () => {
     }; // 更新dragging資料
     setPlayers(newPlayers);
   };
+
+  // ------------------------------
+
+  // ------------------------------Painting Event
 
   // handle drawing with mouse
   const handleMouseDown = (e) => {
@@ -207,6 +212,10 @@ const FormatB = () => {
     setIsDrawing(false);
   };
 
+  // ------------------------------
+
+  // ------------------------------Pen & Eraser
+
   const handleDeleteLine = () => {
     setLines([]);
   };
@@ -220,7 +229,11 @@ const FormatB = () => {
     setIsEraser(false);
   };
 
-  // // fnCollection - prevStep
+  // ------------------------------
+
+  // ------------------------------PrevStep & NextStep
+
+  // fnCollection - prevStep
   // const handlePrevStep = () => {
   //   let newLines = lines.slice(); // 淺拷貝
   //   if (newLines.length > 0) {
@@ -272,6 +285,8 @@ const FormatB = () => {
     );
     setLines((currentLines) => [...currentLines, lastPop]);
   };
+
+  // ------------------------------
 
   // handle fncollection showUp
   const collectionClickHandler = () => {
