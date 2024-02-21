@@ -19,7 +19,7 @@ import { Navigation, A11y } from "swiper/modules";
 import "swiper/swiper-bundle.css";
 
 // import konvas & use-image Hook
-import { Stage, Layer, Image, Circle, Line } from "react-konva";
+import { Stage, Layer, Image, Circle, Line, Text, Group } from "react-konva";
 import useImage from "use-image";
 
 // import immer for immutable
@@ -72,6 +72,9 @@ const FormatB = () => {
     Array.from({ length: Number(settingInfo.memberNumber) }, (player, i) => ({
       x: playersX(),
       y: 40 * (i + 1),
+      name: settingInfo.memberInfo[i]?.name,
+      color: settingInfo.memberInfo[i]?.color,
+      isDragging: false,
     }))
   ); // 初始球員位置
   // console.log(players);
@@ -128,7 +131,12 @@ const FormatB = () => {
 
   const handleDragEnd = (e, index) => {
     const newPlayers = players.slice(); // 淺拷貝，為了不直接修改原始的 players 狀態，這是React中處理狀態的最佳實踐
-    newPlayers[index] = { x: e.target.x(), y: e.target.y(), isDragging: false }; // 更新dragging資料
+    newPlayers[index] = {
+      ...players[index],
+      x: e.target.x(),
+      y: e.target.y(),
+      isDragging: false,
+    }; // 更新dragging資料
     setPlayers(newPlayers);
   };
 
@@ -278,16 +286,35 @@ const FormatB = () => {
           {/* Players Layer */}
           <Layer>
             {players.map((player, index) => (
-              <Circle
+              <Group
                 key={index}
                 x={player.x}
                 y={player.y}
-                radius={circleRadius}
-                fill="red"
                 draggable
                 onDragStart={(e) => handleDragStart(e, index)}
                 onDragEnd={(e) => handleDragEnd(e, index)}
-              />
+              >
+                <Circle radius={circleRadius} fill={player.color} x={0} y={0} />
+                <Text
+                  x={-circleRadius} // 根据圆的半径调整文本位置，以使其居中
+                  y={-10} // 轻微调整，使文本在圆形中心上方
+                  text={player.name}
+                  fontSize={10}
+                  fill="black"
+                  align="center"
+                  width={circleRadius * 2}
+                ></Text>
+              </Group>
+              // <Circle
+              //   key={index}
+              //   x={player.x}
+              //   y={player.y}
+              //   draggable
+              //   onDragStart={(e) => handleDragStart(e, index)}
+              //   onDragEnd={(e) => handleDragEnd(e, index)}
+              //   radius={circleRadius}
+              //   fill={player.color}
+              // ></Circle>
             ))}
           </Layer>
 
