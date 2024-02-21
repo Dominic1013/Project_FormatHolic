@@ -58,10 +58,7 @@ const FormatB = () => {
   );
   // Konva.js State
   const [courtIamge] = useImage("/formatBMedia/pro_court.jpeg"); // court backgroundImage
-  // const [players, setPlayers] = useState([
-  //   { x: 100, y: 100 },
-  //   { x: 150, y: 150 },
-  // ]); // 初始球員位置
+  const [courtIamge_half] = useImage("/formatBMedia/pro_court_half.jpeg"); // court half backgroundImage
 
   const playersX = () => {
     if (settingInfo.initFormat === "side") {
@@ -270,7 +267,9 @@ const FormatB = () => {
           {/* Background Layer */}
           <Layer>
             <Image
-              image={courtIamge}
+              image={
+                settingInfo.groundSize === "full" ? courtIamge : courtIamge_half
+              }
               width={canvasSize.width}
               height={canvasSize.height}
             />
