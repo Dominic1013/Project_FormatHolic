@@ -58,6 +58,7 @@ const BasketballSetting = () => {
         //如果數字不在1-10之間，不更新value，但不阻止使用者刪除數字
         //出現Warning Text
         setPersonWarning(true);
+        return;
       }
 
       // 更新state

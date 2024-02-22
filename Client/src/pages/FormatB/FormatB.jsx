@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./formatB.scss";
 
 // import icons
@@ -10,6 +10,7 @@ import { IoArrowRedo } from "react-icons/io5";
 import { FaComputerMouse } from "react-icons/fa6";
 import { FaPencilAlt } from "react-icons/fa";
 import { FaEraser } from "react-icons/fa";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 import { RiFunctionLine } from "react-icons/ri";
 
@@ -74,7 +75,7 @@ const FormatB = () => {
   // listen window size(for Stage RWD)
   const [canvasSize, setCanvasSize] = useState({ width: 873, height: 494 });
 
-  // -------------------------------
+  // ----------------------------------------------- for circle init
   //for circle X
   const playersX = () => {
     if (settingInfo.initFormat === "side") {
@@ -102,6 +103,7 @@ const FormatB = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // 初始球員數量及位置
   const [players, setPlayers] = useState(
     Array.from({ length: Number(settingInfo.memberNumber) }, (player, i) => ({
       x: playersX(),
@@ -110,9 +112,97 @@ const FormatB = () => {
       color: settingInfo.memberInfo[i]?.color || "#D25656",
       isDragging: false,
     }))
-  ); // 初始球員位置
+  );
 
-  // -------------------------------
+  // ------------------------------------------------新增球員按鈕
+  const [personWarning, setPersonWarning] = useState(false);
+  const [personNullWarning, setPersonNullWarning] = useState(false);
+  const [personValue, setPersonValue] = useState(""); // input裡轉換成只能是1-10的數字
+  const [realPersonValue, setRealPersonValue] = useState(""); // input裡真實撰寫的數字（可能超過10或小於1）
+  // console.log(personValue);
+  const [addPlayers, setAddPlayers] = useState([]);
+
+  useEffect(() => {
+    const newAddPlayers = Array.from(
+      { length: Number(personValue) },
+      (Addplayer, i) => ({
+        x: 50,
+        y: 50,
+        // name: settingInfo.memberInfo[i]?.name || "",
+        // color: settingInfo.memberInfo[i]?.color || "#D25656",
+        isDragging: false,
+      })
+    );
+    setAddPlayers(newAddPlayers);
+  }, [personValue]);
+  console.log(personValue);
+
+  const dialog = React.useRef(null);
+  const handleOpenDialog = () => {
+    dialog.current.showModal();
+  };
+
+  const handleCloseDialog = () => {
+    dialog.current.close();
+  };
+
+  //新增球員
+  const handleAddPlayerChange = (e) => {
+    if (e.target.id === "person") {
+      // console.log(e.target.id);
+      const val = e.target.value;
+      if (val === "") {
+        setPersonValue(val);
+        setRealPersonValue(val);
+
+        return;
+      }
+
+      // 檢查person input是否為數字
+      const num = Number(val);
+      if (!isNaN(num) && num >= 1 && num <= 10) {
+        setPersonValue(val);
+        setRealPersonValue(val);
+
+        setPersonWarning(false);
+      } else if (!isNaN(num) && (num < 1 || num > 10)) {
+        //如果數字不在1-10之間，不更新value，但不阻止使用者刪除數字
+        //出現Warning Text
+        setRealPersonValue(val);
+        setPersonWarning(true);
+        return;
+      }
+
+      // 更新state
+      setPersonValue(val);
+      setRealPersonValue(val);
+    }
+  };
+
+  const handleSend = () => {
+    if (realPersonValue && 10 >= Number(realPersonValue) >= 1) {
+      console.log("Success");
+      dialog.current.close();
+      return;
+    }
+    if (
+      (realPersonValue && Number(realPersonValue) < 1) ||
+      Number(realPersonValue) > 10
+    ) {
+      console.log("Out");
+      setPersonWarning(true);
+      setPersonNullWarning(false);
+      return;
+    }
+    if (!realPersonValue) {
+      console.log("Null");
+      setPersonWarning(false);
+      setPersonNullWarning(true);
+      return;
+    }
+  };
+
+  // ------------------------------------------------
 
   useEffect(() => {
     const checkSize = () => {
@@ -314,7 +404,7 @@ const FormatB = () => {
   };
 
   return (
-    <section className="formatB flex">
+    <div className="formatB flex">
       {/* Konva.js */}
       <section>
         <Stage
@@ -369,6 +459,20 @@ const FormatB = () => {
               //   fill={player.color}
               // ></Circle>
             ))}
+            {personValue
+              ? addPlayers.map((addPlayer, i) => (
+                  <Circle
+                    key={i}
+                    x={addPlayer.x}
+                    y={addPlayer.y}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, i)}
+                    onDragEnd={(e) => handleDragEnd(e, i)}
+                    radius={circleRadius}
+                    fill="#D25656"
+                  ></Circle>
+                ))
+              : ""}
           </Layer>
 
           {/* Painting Layer */}
@@ -454,7 +558,7 @@ const FormatB = () => {
         </div>
 
         <div className="fnBox flex" title="New Person">
-          <div className="circle flex">
+          <div className="circle flex" onClick={handleOpenDialog}>
             <FaPersonCirclePlus className="icon" alt="New Person" />
           </div>
           {/* <p className="fnText">New Person</p> */}
@@ -474,7 +578,29 @@ const FormatB = () => {
           {/* <p className="fnText">Next Step</p> */}
         </div>
       </div>
-    </section>
+      <dialog ref={dialog} className="dialog">
+        <div className="close" onClick={handleCloseDialog}>
+          <AiFillCloseCircle className="icon" />
+        </div>
+        <h3>Add Players</h3>
+        <input
+          id="person"
+          type="number"
+          max="10"
+          min="0"
+          onChange={handleAddPlayerChange}
+        />
+        <div className="btn" onClick={handleSend}>
+          send
+        </div>
+        {personWarning ? <p className="personWarning"> enter 1-10</p> : ""}
+        {personNullWarning ? (
+          <p className="personWarning"> enter number</p>
+        ) : (
+          ""
+        )}
+      </dialog>
+    </div>
   );
 };
 
