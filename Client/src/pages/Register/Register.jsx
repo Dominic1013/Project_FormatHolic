@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./register.css";
+import "./register.scss";
 import userApi from "../../api/user.api";
 import { setUser } from "../../redux/slices/user.slice";
 import { useFormik } from "formik";

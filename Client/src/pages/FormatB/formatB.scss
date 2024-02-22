@@ -28,6 +28,7 @@
 // scss -------------------------
 
 .formatB {
+  position: relative;
   flex-direction: column;
   min-width: 100vw;
   min-height: 100vh;
@@ -117,6 +118,46 @@
           font-size: 1.5rem;
         }
       }
+    }
+  }
+
+  .dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: none;
+    border-radius: 10px;
+    padding: 3rem;
+    box-shadow: 0 0 0.5rem 0.25rem hsl(0 0% 0% / 10%);
+
+    h3,
+    input,
+    .btn {
+      margin: 0 auto;
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .btn {
+      font-weight: 500;
+      margin: 1rem 0rem;
+    }
+
+    .personWarning {
+      text-align: center;
+
+      width: 100%;
+      color: red;
     }
   }
 }

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import "./formatB.css";
+import React, { useState, useEffect, useRef } from "react";
+import "./formatB.scss";
 import axios from "axios";
 
 // import icons
@@ -8,9 +8,10 @@ import { FaTrash } from "react-icons/fa6";
 import { FaPersonCirclePlus } from "react-icons/fa6";
 import { IoArrowUndoSharp } from "react-icons/io5";
 import { IoArrowRedo } from "react-icons/io5";
-import { IoMdSettings } from "react-icons/io";
+import { FaComputerMouse } from "react-icons/fa6";
 import { FaPencilAlt } from "react-icons/fa";
 import { FaEraser } from "react-icons/fa";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 import { RiFunctionLine } from "react-icons/ri";
 
@@ -20,49 +21,55 @@ import { Navigation, A11y } from "swiper/modules";
 import "swiper/swiper-bundle.css";
 
 // import konvas & use-image Hook
-import { Stage, Layer, Image, Circle, Line } from "react-konva";
+import { Stage, Layer, Image, Circle, Line, Text, Group } from "react-konva";
 import useImage from "use-image";
 
 // import immer for immutable
 import { produce } from "immer";
 
+// // Context for settingInfo pass
+import { useSetting } from "../../SettingInfoContext";
+
 // just for test swiper.js
 const testData = [
   {
     id: 1,
-    image: "./settingMedia/ground_initFormat.jpg",
+    image: "/settingMedia/ground_initFormat.jpg",
   },
   {
     id: 2,
-    image: "./settingMedia/ground_initFormat2.jpg",
+    image: "/settingMedia/ground_initFormat2.jpg",
   },
   {
     id: 3,
-    image: "./settingMedia/ground_initFormat.jpg",
+    image: "/settingMedia/ground_initFormat.jpg",
   },
   {
     id: 4,
-    image: "./settingMedia/ground_initFormat.jpg",
+    image: "/settingMedia/ground_initFormat.jpg",
   },
 ];
 
 const FormatB = () => {
+  // state from BasketballSetting.jsx
+  const { settingInfo, setSettingInfo } = useSetting();
+
   // fncollection clcik event useState
   const [collectionActive, setCollectionActive] = useState(
     "fnCollection grid container"
   );
   // Konva.js State
   const [courtIamge] = useImage("/formatBMedia/pro_court.jpeg"); // court backgroundImage
-  const [players, setPlayers] = useState([
-    { x: 100, y: 100 },
-    { x: 150, y: 150 },
-  ]); // 初始球員位置
+  const [courtIamge_half] = useImage("/formatBMedia/pro_court_half.jpeg"); // court half backgroundImage
+
   // drawing lines state
   const [lines, setLines] = useState([]);
   // for players circle RWD
   const [circleRadius, setCircleRadius] = useState(20);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isEraser, setIsEraser] = useState(false);
+  const [isMouse, setIsMouse] = useState(true);
+
   // for prevStep & nextStep state
   const [restore, setRestore] = useState([]);
 
@@ -73,6 +80,135 @@ const FormatB = () => {
   const [canvasSize, setCanvasSize] = useState({ width: 873, height: 494 });
 
   const stageRef = React.useRef(null);
+
+  // ----------------------------------------------- for circle init
+  //for circle X
+  const playersX = () => {
+    if (settingInfo.initFormat === "side") {
+      return 100;
+    } else {
+      return 450;
+    }
+  };
+  // for circle y
+  const checkIsWindowSm = () => window.innerWidth < 500;
+  const [isWindowSm, setIsWindowSm] = useState(checkIsWindowSm());
+
+  const playersY = (i) => {
+    return isWindowSm ? 20 * (i + 1) : 40 * (i + 1);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsWindowSm(checkIsWindowSm());
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // 初始球員數量及位置
+  const [players, setPlayers] = useState(
+    Array.from({ length: Number(settingInfo.memberNumber) }, (player, i) => ({
+      x: playersX(),
+      y: playersY(i) || 20,
+      name: settingInfo.memberInfo[i]?.name || "",
+      color: settingInfo.memberInfo[i]?.color || "#D25656",
+      isDragging: false,
+    }))
+  );
+
+  // ------------------------------------------------新增球員按鈕
+  const [personWarning, setPersonWarning] = useState(false);
+  const [personNullWarning, setPersonNullWarning] = useState(false);
+  const [personValue, setPersonValue] = useState(""); // input裡轉換成只能是1-10的數字
+  const [realPersonValue, setRealPersonValue] = useState(""); // input裡真實撰寫的數字（可能超過10或小於1）
+  // console.log(personValue);
+  const [addPlayers, setAddPlayers] = useState([]);
+
+  useEffect(() => {
+    const newAddPlayers = Array.from(
+      { length: Number(personValue) },
+      (Addplayer, i) => ({
+        x: 50,
+        y: 50,
+        // name: settingInfo.memberInfo[i]?.name || "",
+        // color: settingInfo.memberInfo[i]?.color || "#D25656",
+        isDragging: false,
+      })
+    );
+    setAddPlayers(newAddPlayers);
+  }, [personValue]);
+  // console.log(personValue);
+
+  const dialog = React.useRef(null);
+  const handleOpenDialog = () => {
+    dialog.current.showModal();
+  };
+
+  const handleCloseDialog = () => {
+    dialog.current.close();
+  };
+
+  //新增球員
+  const handleAddPlayerChange = (e) => {
+    if (e.target.id === "person") {
+      // console.log(e.target.id);
+      const val = e.target.value;
+      if (val === "") {
+        setPersonValue(val);
+        setRealPersonValue(val);
+
+        return;
+      }
+
+      // 檢查person input是否為數字
+      const num = Number(val);
+      if (!isNaN(num) && num >= 1 && num <= 10) {
+        setPersonValue(val);
+        setRealPersonValue(val);
+
+        setPersonWarning(false);
+      } else if (!isNaN(num) && (num < 1 || num > 10)) {
+        //如果數字不在1-10之間，不更新value，但不阻止使用者刪除數字
+        //出現Warning Text
+        setRealPersonValue(val);
+        setPersonWarning(true);
+        return;
+      }
+
+      // 更新state
+      setPersonValue(val);
+      setRealPersonValue(val);
+    }
+  };
+
+  const handleSend = () => {
+    if (realPersonValue && 10 >= Number(realPersonValue) >= 1) {
+      // console.log("Success");
+      dialog.current.close();
+      return;
+    }
+    if (
+      (realPersonValue && Number(realPersonValue) < 1) ||
+      Number(realPersonValue) > 10
+    ) {
+      console.log("Out");
+      setPersonWarning(true);
+      setPersonNullWarning(false);
+      return;
+    }
+    if (!realPersonValue) {
+      console.log("Null");
+      setPersonWarning(false);
+      setPersonNullWarning(true);
+      return;
+    }
+  };
+
+  // ------------------------------------------------
 
   useEffect(() => {
     const checkSize = () => {
@@ -90,6 +226,7 @@ const FormatB = () => {
       if (window.innerWidth < 500) {
         setCanvasSize({ width: 300, height: 170 });
         setCircleRadius(10);
+        setIsWindowSm(true);
       }
       if (window.innerWidth > 900) {
         setCanvasSize({ width: 873, height: 494 });
@@ -104,8 +241,11 @@ const FormatB = () => {
     checkSize();
   }, []);
 
+  // ----------------------------Drag event
   // konva.js handleFn
   // handle drag move with player cicle
+
+  //預設球員的位置更新
   const handleDragStart = (e, index) => {
     const newPlayers = players.slice(); // 淺拷貝，為了不直接修改原始的 players 狀態，這是React中處理狀態的最佳實踐
     newPlayers[index] = { ...players[index], isDragging: true }; // 更新dragging資料
@@ -114,21 +254,69 @@ const FormatB = () => {
 
   const handleDragEnd = (e, index) => {
     const newPlayers = players.slice(); // 淺拷貝，為了不直接修改原始的 players 狀態，這是React中處理狀態的最佳實踐
-    newPlayers[index] = { x: e.target.x(), y: e.target.y(), isDragging: false }; // 更新dragging資料
+    newPlayers[index] = {
+      ...players[index],
+      x: e.target.x(),
+      y: e.target.y(),
+      isDragging: false,
+    }; // 更新dragging資料
     setPlayers(newPlayers);
   };
 
+  // 新增球員的位置更新
+  const handleAddPlayersDragStart = (e, index) => {
+    const newPlayers = addPlayers.slice(); // 淺拷貝，為了不直接修改原始的 players 狀態，這是React中處理狀態的最佳實踐
+    newPlayers[index] = { ...addPlayers[index], isDragging: true }; // 更新dragging資料
+    setAddPlayers(newPlayers);
+  };
+
+  const handleAddPlayerDragEnd = (e, index) => {
+    const newPlayers = addPlayers.slice(); // 淺拷貝，為了不直接修改原始的 players 狀態，這是React中處理狀態的最佳實踐
+    newPlayers[index] = {
+      ...addPlayers[index],
+      x: e.target.x(),
+      y: e.target.y(),
+      isDragging: false,
+    }; // 更新dragging資料
+    setAddPlayers(newPlayers);
+  };
+  // ------------------------------
+
+  // ------------------------------Painting Event
+
   // handle drawing with mouse
   const handleMouseDown = (e) => {
-    setIsDrawing(true);
-    //獲取mouse在畫布stage上的當前位置，這是konva.js的方法，用於獲取舞台（stage）相對於畫布的座標位置。
-    const position = e.target.getStage().getPointerPosition();
-    // setLines([...lines, { points: [position.x, position.y], tool: "pen" }]);
-    setLines([
-      ...lines,
-      { points: [position.x, position.y], tool: isEraser ? "eraser" : "pen" },
-    ]);
+    if (isMouse) {
+      return;
+    } else {
+      setIsDrawing(true);
+      //獲取mouse在畫布stage上的當前位置，這是konva.js的方法，用於獲取舞台（stage）相對於畫布的座標位置。
+      const position = e.target.getStage().getPointerPosition();
+
+      setLines([
+        ...lines,
+        { points: [position.x, position.y], tool: isEraser ? "eraser" : "pen" },
+        // {
+        //   points: [position.x, position.y],
+        //   tool: isEraser ? "eraser" : isPen ? "pen" : "",
+        // },
+      ]);
+    }
   };
+
+  // const handleMouseMove = (e) => {
+  //   if (!isDrawing) {
+  //     return;
+  //   }
+  //   const stage = e.target.getStage();
+  //   const point = stage.getPointerPosition();
+  //   let lastLine = lines[lines.length - 1];
+  //   lastLine.points = lastLine.points.concat([point.x, point.y]);
+
+  //   setLines(lines.concat());
+  //   // bc we change the data didnt with setState,react didnt know the change,
+  //   // create a copy to useState, let it know state is changed.
+  // };
 
   const handleMouseMove = (e) => {
     if (!isDrawing) {
@@ -136,17 +324,22 @@ const FormatB = () => {
     }
     const stage = e.target.getStage();
     const point = stage.getPointerPosition();
-    let lastLine = lines[lines.length - 1];
-    lastLine.points = lastLine.points.concat([point.x, point.y]);
-
-    setLines(lines.concat());
-    // bc we change the data didnt with setState,react didnt know the change,
-    // create a copy to useState, let it know state is changed.
+    setLines((currentLines) => {
+      return produce(currentLines, (draftLines) => {
+        let lastLine = draftLines[draftLines.length - 1];
+        lastLine.points = lastLine.points.concat([point.x, point.y]);
+        // lastLine.points.push(point.x, point.y); //也可以使用mutable method
+      });
+    });
   };
 
   const handleMouseUp = (e) => {
     setIsDrawing(false);
   };
+
+  // ------------------------------
+
+  // ------------------------------Pen & Eraser
 
   const handleDeleteLine = () => {
     setLines([]);
@@ -155,10 +348,16 @@ const FormatB = () => {
   // fnCollection - eraser function
   const switchToEraser = () => {
     setIsEraser(true);
+    setIsMouse(false);
   };
   // fnCollection - pen function
   const switchToPen = () => {
     setIsEraser(false);
+    setIsMouse(false);
+  };
+
+  const switchToMouse = () => {
+    setIsMouse(true);
   };
 
   //測試下載功能
@@ -204,7 +403,54 @@ const FormatB = () => {
     console.log("Upload succeed");
   };
 
-  // // fnCollection - prevStep
+  //測試下載功
+  const uploadToCloudinary = async (base64Image) => {
+    try {
+      // 使用 Axios 將 Base64 圖片的數據獲取為 Blob
+      const response = await axios.get(base64Image, {
+        responseType: "blob",
+      });
+
+      // 創建一個 FormData 對象
+      const formData = new FormData();
+      formData.append("file", response.data);
+      formData.append("upload_preset", "g4ttb664");
+      formData.append("folder", "FormatHolic");
+
+      // 發送 POST 請求到 Cloudinary 的上傳端點
+      const uploadResponse = await axios.post(
+        `https://api.cloudinary.com/v1_1/dpegsgk4s/upload`,
+        formData
+      );
+
+      // 解析 JSON 響應，並返回上傳的圖片 URL
+      return uploadResponse.data.secure_url;
+    } catch (error) {
+      console.error("Error uploading image to Cloudinary:", error);
+      return null;
+    }
+  };
+
+  const handleSaveImage = async () => {
+    const base64Image = stageRef.current.toDataURL();
+
+    const imageFromCloudinary = await uploadToCloudinary(base64Image);
+
+    const newImage = {
+      id: Date.now(),
+      image_path: imageFromCloudinary,
+    };
+
+    setSaveImageUrl([...saveImageUrl, newImage]);
+
+    console.log("Upload succeed");
+  };
+
+  // ------------------------------
+
+  // ------------------------------PrevStep & NextStep
+
+  // fnCollection - prevStep
   // const handlePrevStep = () => {
   //   let newLines = lines.slice(); // 淺拷貝
   //   if (newLines.length > 0) {
@@ -257,6 +503,8 @@ const FormatB = () => {
     setLines((currentLines) => [...currentLines, lastPop]);
   };
 
+  // ------------------------------
+
   // handle fncollection showUp
   const collectionClickHandler = () => {
     if (collectionActive === "fnCollection grid container") {
@@ -267,7 +515,7 @@ const FormatB = () => {
   };
 
   return (
-    <section className="formatB flex">
+    <div className="formatB flex">
       {/* Konva.js */}
       <section>
         <Stage
@@ -282,7 +530,9 @@ const FormatB = () => {
           {/* Background Layer */}
           <Layer>
             <Image
-              image={courtIamge}
+              image={
+                settingInfo.groundSize === "full" ? courtIamge : courtIamge_half
+              }
               width={canvasSize.width}
               height={canvasSize.height}
             />
@@ -291,17 +541,50 @@ const FormatB = () => {
           {/* Players Layer */}
           <Layer>
             {players.map((player, index) => (
-              <Circle
+              <Group
                 key={index}
                 x={player.x}
                 y={player.y}
-                radius={circleRadius}
-                fill="red"
                 draggable
                 onDragStart={(e) => handleDragStart(e, index)}
                 onDragEnd={(e) => handleDragEnd(e, index)}
-              />
+              >
+                <Circle radius={circleRadius} fill={player.color} x={0} y={0} />
+                <Text
+                  x={-circleRadius} // 根据圆的半径调整文本位置，以使其居中
+                  y={-10} // 轻微调整，使文本在圆形中心上方
+                  text={player.name}
+                  fontSize={10}
+                  fill="black"
+                  align="center"
+                  width={circleRadius * 2}
+                ></Text>
+              </Group>
+              // <Circle
+              //   key={index}
+              //   x={player.x}
+              //   y={player.y}
+              //   draggable
+              //   onDragStart={(e) => handleDragStart(e, index)}
+              //   onDragEnd={(e) => handleDragEnd(e, index)}
+              //   radius={circleRadius}
+              //   fill={player.color}
+              // ></Circle>
             ))}
+            {personValue
+              ? addPlayers.map((addPlayer, i) => (
+                  <Circle
+                    key={i}
+                    x={addPlayer.x}
+                    y={addPlayer.y}
+                    draggable
+                    onDragStart={(e) => handleAddPlayersDragStart(e, i)}
+                    onDragEnd={(e) => handleAddPlayerDragEnd(e, i)}
+                    radius={circleRadius}
+                    fill="#D25656"
+                  ></Circle>
+                ))
+              : ""}
           </Layer>
 
           {/* Painting Layer */}
@@ -365,6 +648,14 @@ const FormatB = () => {
           </div>
           {/* <p className="fnText">Pen</p> */}
         </div>
+
+        <div className="fnBox flex" title="Mouse" onClick={switchToMouse}>
+          <div className="circle flex">
+            <FaComputerMouse className="icon" alt="Mouse" />
+          </div>
+          {/* <p className="fnText">Settings</p> */}
+        </div>
+
         <div className="fnBox flex" title="Layer">
           <div className="circle flex">
             <MdOutlineDataSaverOn
@@ -384,7 +675,7 @@ const FormatB = () => {
         </div>
 
         <div className="fnBox flex" title="New Person">
-          <div className="circle flex">
+          <div className="circle flex" onClick={handleOpenDialog}>
             <FaPersonCirclePlus className="icon" alt="New Person" />
           </div>
           {/* <p className="fnText">New Person</p> */}
@@ -403,15 +694,30 @@ const FormatB = () => {
           </div>
           {/* <p className="fnText">Next Step</p> */}
         </div>
-
-        <div className="fnBox flex" title="Setting">
-          <div className="circle flex">
-            <IoMdSettings className="icon" alt="Setting" />
-          </div>
-          {/* <p className="fnText">Settings</p> */}
-        </div>
       </div>
-    </section>
+      <dialog ref={dialog} className="dialog">
+        <div className="close" onClick={handleCloseDialog}>
+          <AiFillCloseCircle className="icon" />
+        </div>
+        <h3>Add Players</h3>
+        <input
+          id="person"
+          type="number"
+          max="10"
+          min="0"
+          onChange={handleAddPlayerChange}
+        />
+        <div className="btn" onClick={handleSend}>
+          send
+        </div>
+        {personWarning ? <p className="personWarning"> enter 1-10</p> : ""}
+        {personNullWarning ? (
+          <p className="personWarning"> enter number</p>
+        ) : (
+          ""
+        )}
+      </dialog>
+    </div>
   );
 };
 

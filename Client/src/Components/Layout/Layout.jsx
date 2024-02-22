@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import "./layout.css";
-import { Outlet } from "react-router-dom";
+import "./layout.scss";
+import { Link, Outlet } from "react-router-dom";
 
 // import icons
 import { TbGridDots } from "react-icons/tb";
@@ -40,32 +40,32 @@ const Layout = () => {
           {/* logo */}
           <header className="header flex">
             <div className="logoDiv">
-              <a href="/" className="logo flex">
+              <Link to="/" className="logo flex">
                 <h3>
                   <PiSneakerMoveDuotone className="icon" />
                   FormatHolic
                 </h3>
-              </a>
+              </Link>
             </div>
             {/* navbarLinks */}
             <div className={active}>
               <ul className="navbarLists flex">
                 <li className="navItem">
-                  <a href="" className="navLink">
+                  <Link to="/" className="navLink">
                     Home
-                  </a>
+                  </Link>
                 </li>
 
                 <li className="navItem">
-                  <a href="" className="navLink">
+                  <a href="#" className="navLink">
                     HowToUse
                   </a>
                 </li>
                 <button className="btn">
-                  <a href="/login">Login</a>
+                  <Link to="/login">Login</Link>
                 </button>
                 <button className="btn">
-                  <a href="/register">Register</a>
+                  <Link to="/register">Register</Link>
                 </button>
                 <div className="closeNavbar" onClick={removeNavbar}>
                   <AiFillCloseCircle className="icon" />
@@ -92,20 +92,20 @@ const Layout = () => {
           {/* logo */}
           <header className="header flex">
             <div className="logoDiv">
-              <a href="" className="logo flex">
+              <Link to="/" className="logo flex">
                 <h3>
                   <PiSneakerMoveDuotone className="icon" />
                   FormatHolic
                 </h3>
-              </a>
+              </Link>
             </div>
             {/* navbarLinks */}
             <div className={active}>
               <ul className="navbarLists flex">
                 <li className="navItem">
-                  <a href="" className="navLink">
+                  <Link to="/" className="navLink">
                     Home
-                  </a>
+                  </Link>
                 </li>
 
                 <li className="navItem">

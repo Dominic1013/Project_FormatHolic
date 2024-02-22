@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./login.css";
+import "./login.scss";
 import userApi from "../../api/user.api";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
