@@ -360,7 +360,7 @@ const FormatB = () => {
     setIsMouse(true);
   };
 
-  //測試下載功能
+  //測試下載功
   const uploadToCloudinary = async (base64Image) => {
     try {
       // 使用 Axios 將 Base64 圖片的數據獲取為 Blob
