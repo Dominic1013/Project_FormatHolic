@@ -134,10 +134,10 @@ const BasketballSetting = () => {
 
   const handleButton = (e) => {
     e.preventDefault();
-    console.log("ready");
+    // console.log("ready");
     if (settingInfo.teamName && settingInfo.memberNumber) {
       navigate("/settings/FormatB");
-      console.log("success");
+      // console.log("success");
     }
   };
 

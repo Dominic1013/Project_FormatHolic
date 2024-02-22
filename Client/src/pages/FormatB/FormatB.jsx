@@ -135,7 +135,7 @@ const FormatB = () => {
     );
     setAddPlayers(newAddPlayers);
   }, [personValue]);
-  console.log(personValue);
+  // console.log(personValue);
 
   const dialog = React.useRef(null);
   const handleOpenDialog = () => {
@@ -181,7 +181,7 @@ const FormatB = () => {
 
   const handleSend = () => {
     if (realPersonValue && 10 >= Number(realPersonValue) >= 1) {
-      console.log("Success");
+      // console.log("Success");
       dialog.current.close();
       return;
     }
