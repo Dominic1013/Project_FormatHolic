@@ -238,6 +238,8 @@ const FormatB = () => {
   // ----------------------------Drag event
   // konva.js handleFn
   // handle drag move with player cicle
+
+  //預設球員的位置更新
   const handleDragStart = (e, index) => {
     const newPlayers = players.slice(); // 淺拷貝，為了不直接修改原始的 players 狀態，這是React中處理狀態的最佳實踐
     newPlayers[index] = { ...players[index], isDragging: true }; // 更新dragging資料
@@ -255,6 +257,23 @@ const FormatB = () => {
     setPlayers(newPlayers);
   };
 
+  // 新增球員的位置更新
+  const handleAddPlayersDragStart = (e, index) => {
+    const newPlayers = addPlayers.slice(); // 淺拷貝，為了不直接修改原始的 players 狀態，這是React中處理狀態的最佳實踐
+    newPlayers[index] = { ...addPlayers[index], isDragging: true }; // 更新dragging資料
+    setAddPlayers(newPlayers);
+  };
+
+  const handleAddPlayerDragEnd = (e, index) => {
+    const newPlayers = addPlayers.slice(); // 淺拷貝，為了不直接修改原始的 players 狀態，這是React中處理狀態的最佳實踐
+    newPlayers[index] = {
+      ...addPlayers[index],
+      x: e.target.x(),
+      y: e.target.y(),
+      isDragging: false,
+    }; // 更新dragging資料
+    setAddPlayers(newPlayers);
+  };
   // ------------------------------
 
   // ------------------------------Painting Event
@@ -466,8 +485,8 @@ const FormatB = () => {
                     x={addPlayer.x}
                     y={addPlayer.y}
                     draggable
-                    onDragStart={(e) => handleDragStart(e, i)}
-                    onDragEnd={(e) => handleDragEnd(e, i)}
+                    onDragStart={(e) => handleAddPlayersDragStart(e, i)}
+                    onDragEnd={(e) => handleAddPlayerDragEnd(e, i)}
                     radius={circleRadius}
                     fill="#D25656"
                   ></Circle>
