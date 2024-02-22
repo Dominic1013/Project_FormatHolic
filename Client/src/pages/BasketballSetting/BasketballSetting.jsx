@@ -77,14 +77,16 @@ const BasketballSetting = () => {
     }
   };
 
-  const handleInput = (index, field, value) => {
+  const handleInput = (index, keyName, value) => {
     setSettingInfo((prevSettingInfo) => {
       const newMemberInfo = [...prevSettingInfo.memberInfo];
+      //如果沒有填寫資料
       if (!newMemberInfo[index]) {
         // default value
         newMemberInfo[index] = { name: "", color: "#D25656" };
       }
-      newMemberInfo[index][field] = value;
+      //如果有
+      newMemberInfo[index][keyName] = value;
 
       return { ...prevSettingInfo, memberInfo: newMemberInfo };
     });
