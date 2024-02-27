@@ -2,10 +2,9 @@ import axios from "axios";
 import queryString from "query-string";
 
 // const baseURL = "http://127.0.0.1:5000/api/v1/";
-// const baseURL = "http://localhost:5000/api/user";
-const baseURL = "http://localhost:5000/api/"; // 記得按你本地的port改回來
+const baseURL = "http://localhost:5000/api/";
 
-const publicClient = axios.create({
+const privateClient = axios.create({
   baseURL,
   //對 URL 參數進行自定義的序列化處理
   paramsSerializer: {
@@ -15,17 +14,18 @@ const publicClient = axios.create({
 });
 
 //設定 Request 攔截器，它在每次發送請求之前執行。
-publicClient.interceptors.request.use(async (config) => {
+privateClient.interceptors.request.use(async (config) => {
   return {
     ...config,
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("actkn")}`,
     },
   };
 });
 
 //設定了 Response 攔截器，它在每次收到響應之後執行。
-publicClient.interceptors.response.use(
+privateClient.interceptors.response.use(
   (response) => {
     if (response && response.data) return response.data;
     return response;
@@ -35,4 +35,4 @@ publicClient.interceptors.response.use(
   }
 );
 
-export default publicClient;
+export default privateClient;

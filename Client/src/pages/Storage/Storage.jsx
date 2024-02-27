@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./storage.scss";
-
+import formatImageApi from "../../api/format.image.api";
 // import icons
 import { FaSave } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
@@ -44,7 +44,23 @@ const testData = [
 
 const Storage = () => {
   const [dataStyle, setDataStyle] = useState("dataDiv flex");
+  const [count, setCount] = useState(0);
+  const [formatImages, setFormatImages] = useState([]);
   //Function to handle close icons click
+  useEffect(() => {
+    const getFormats = async () => {
+      const { response, err } = await formatImageApi.getFormat();
+
+      if (err) console.log(err);
+      if (response) {
+        setCount(response.length);
+        setFormatImages([...response]);
+      }
+    };
+
+    getFormats();
+  }, []);
+
   const deleteHandler = (e) => {
     alert(e.target + "你好");
 
@@ -64,7 +80,7 @@ const Storage = () => {
           <h3>File</h3>
 
           {/* p要改成資料的真正數量 */}
-          <p className="fileNumbers">4</p>
+          <p className="fileNumbers">{count}</p>
         </div>
 
         <div className="BackHome item flex">
@@ -77,14 +93,14 @@ const Storage = () => {
       {/* --------------------------------------------- */}
       <div className="secondBox flex">
         {/* simulate the DB data to mapping */}
-        {testData.map((data) => {
+        {formatImages.map((data) => {
           return (
             <div className={dataStyle}>
-              <img src={data.img} alt="img" />
-              <div className="dataContent">
+              <img src={data.formatImageUrl[0].image_path} alt="img" />
+              {/* <div className="dataContent">
                 <h3>{data.teamName}</h3>
                 <p>{data.updateDay} days updated</p>
-              </div>
+              </div> */}
               <div className="delete">
                 <AiFillCloseCircle className="icon" onClick={deleteHandler} />
               </div>

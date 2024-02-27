@@ -25,6 +25,7 @@
 }
 
 .formatB {
+  position: relative;
   flex-direction: column;
   min-width: 100vw;
   min-height: 100vh;
@@ -98,6 +99,42 @@
   color: var(--blackColor);
   font-size: 1.5rem;
 }
+.formatB .dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  border-radius: 10px;
+  padding: 3rem;
+  box-shadow: 0 0 0.5rem 0.25rem hsla(0, 0%, 0%, 0.1);
+}
+.formatB .dialog h3,
+.formatB .dialog input,
+.formatB .dialog .btn {
+  margin: 0 auto;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.formatB .dialog .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.formatB .dialog h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.formatB .dialog .btn {
+  font-weight: 500;
+  margin: 1rem 0rem;
+}
+.formatB .dialog .personWarning {
+  text-align: center;
+  width: 100%;
+  color: red;
+}
 
 @media screen and (min-width: 768px) {
   .formatB {
@@ -109,10 +146,21 @@
   .formatB .canvasContainer {
     max-width: 800px;
     margin: auto;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
   }
   .formatB .canvasContainer canvas {
     transform: scale(2);
+  }
+  .formatB .saveAllBtn {
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    width: auto;
+  }
+  .formatB .saveAllBtn button {
+    border-radius: 5px;
+    padding: 0.25rem;
+    width: auto;
   }
   .formatB .swiperDiv {
     width: 70%;
@@ -142,8 +190,8 @@
     left: -500rem;
   }
   .formatB .toggleContainer {
-    margin-top: 3rem;
-    margin-bottom: 3rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
     width: -moz-max-content;
     width: max-content;
     background: white;

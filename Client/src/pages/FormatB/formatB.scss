@@ -175,10 +175,22 @@
       max-width: 800px;
 
       margin: auto;
-      margin-bottom: 4rem;
+      margin-bottom: 2rem;
 
       canvas {
         transform: scale(2); // for canvas width height problem
+      }
+    }
+
+    .saveAllBtn {
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      width: auto;
+      button {
+        border-radius: 5px;
+        padding: 0.25rem;
+        width: auto;
       }
     }
 
@@ -216,8 +228,8 @@
     }
 
     .toggleContainer {
-      margin-top: 3rem;
-      margin-bottom: 3rem;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
       width: max-content;
 
       background: white;

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./formatB.scss";
 import axios from "axios";
+import formatImageApi from "../../api/format.image.api";
 
 // import icons
 import { MdOutlineDataSaverOn } from "react-icons/md";
@@ -407,6 +408,13 @@ const FormatB = () => {
 
   // ------------------------------
 
+  const handleSubmit = async () => {
+    const { response, err } = await formatImageApi.add(saveImageUrl);
+
+    if (err) console.log(err);
+    if (response) console.log("ok");
+  };
+
   // ------------------------------PrevStep & NextStep
 
   // fnCollection - prevStep
@@ -571,6 +579,11 @@ const FormatB = () => {
         <RiFunctionLine className="icon" />
       </div>
       {/* --------------------------------------------------- */}
+
+      <div className="saveAllBtn">
+        <button onClick={handleSubmit}> Save All </button>
+      </div>
+
       {/* swiper.js */}
 
       <div className="swiperDiv">
