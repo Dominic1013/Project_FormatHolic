@@ -84,6 +84,10 @@ const FormatB = () => {
 
   const stageRef = React.useRef(null);
 
+  // useEffect(() => {
+  //   console.log(saveImageUrl);
+  // }, [saveImageUrl]);
+
   // ----------------------------------------------- for circle init
   //for circle X
   const playersX = () => {

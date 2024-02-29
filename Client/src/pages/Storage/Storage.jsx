@@ -93,10 +93,10 @@ const Storage = () => {
       {/* --------------------------------------------- */}
       <div className="secondBox flex">
         {/* simulate the DB data to mapping */}
-        {formatImages.map((data) => {
+        {formatImages.map((data, i) => {
           return (
-            <div className={dataStyle}>
-              <img src={data.formatImageUrl[0].image_path} alt="img" />
+            <div className={dataStyle} key={i}>
+              <img src={data.formatImageUrl[0]?.image_path} alt="img" />
               {/* <div className="dataContent">
                 <h3>{data.teamName}</h3>
                 <p>{data.updateDay} days updated</p>
