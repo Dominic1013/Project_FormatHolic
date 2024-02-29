@@ -2,8 +2,8 @@ import axios from "axios";
 import queryString from "query-string";
 
 // const baseURL = "http://127.0.0.1:5000/api/v1/";
-// const baseURL = "http://localhost:5000/api/user";
-const baseURL = "http://localhost:5000/api/"; // 記得按你本地的port改回來
+// http://localhost:5000/api/
+const baseURL = process.env.REACT_APP_API_URL;
 
 const publicClient = axios.create({
   baseURL,
