@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./storage.scss";
 import formatImageApi from "../../api/format.image.api";
 // import icons
@@ -43,9 +43,12 @@ const testData = [
 ];
 
 const Storage = () => {
-  const [dataStyle, setDataStyle] = useState("dataDiv flex");
   const [count, setCount] = useState(0);
   const [formatImages, setFormatImages] = useState([]);
+
+  // warningDelete dialog state
+  const [dialogRefs, setDialogRefs] = useState([]);
+
   //Function to handle close icons click
   useEffect(() => {
     const getFormats = async () => {
@@ -61,10 +64,37 @@ const Storage = () => {
     getFormats();
   }, []);
 
-  const deleteHandler = (e) => {
-    alert(e.target + "你好");
+  //test---------------------
+  useEffect(() => {
+    console.log(formatImages);
+  }, [formatImages]);
+  //-------------------------
 
-    // setDataStyle("dataDiv flex deleteDiv");
+  const deleteHandler = (index) => {
+    //刪除該formatImages內的內容(完成)
+    //將刪除後的內容傳到mongoDB（未完成）
+
+    setFormatImages((prevFormatImages) => {
+      const newFormatImage = prevFormatImages.filter((_, i) => i !== index);
+      return newFormatImage;
+    });
+    dialogRefs[index].current.close();
+  };
+
+  // save all dialog Fn--------------------
+
+  // const warningDialog = React.useRef(null);
+  useEffect(() => {
+    // 為每個formatImages內的戰術做一個ref
+    setDialogRefs(formatImages.map(() => React.createRef()));
+  }, [formatImages]);
+
+  const handleOpenSaveAll = (index) => {
+    dialogRefs[index].current.showModal();
+  };
+
+  const handleCloseSaveAll = (index) => {
+    dialogRefs[index].current.close();
   };
 
   return (
@@ -93,17 +123,42 @@ const Storage = () => {
       {/* --------------------------------------------- */}
       <div className="secondBox flex">
         {/* simulate the DB data to mapping */}
-        {formatImages.map((data, i) => {
+        {formatImages?.map((data, index) => {
           return (
-            <div className={dataStyle} key={i}>
+            <div className="dataDiv flex" key={index}>
               <img src={data.formatImageUrl[0]?.image_path} alt="img" />
               {/* <div className="dataContent">
                 <h3>{data.teamName}</h3>
                 <p>{data.updateDay} days updated</p>
               </div> */}
-              <div className="delete">
-                <AiFillCloseCircle className="icon" onClick={deleteHandler} />
+              {/* <div className="delete" onClick={() => deleteHandler(index)}> */}
+              <div className="delete" onClick={() => handleOpenSaveAll(index)}>
+                <AiFillCloseCircle className="icon" />
               </div>
+
+              {/* delete dialog */}
+              <dialog ref={dialogRefs[index]} className="warningDialog">
+                <div
+                  className="close"
+                  onClick={() => handleCloseSaveAll(index)}
+                >
+                  <AiFillCloseCircle className="icon" />
+                </div>
+                <h3>Do you want to delete this formation?</h3>
+                <p>Click "Delete" will delete this formation forever.</p>
+
+                <div className="warningDialogButtons">
+                  <div className="btn" onClick={() => deleteHandler(index)}>
+                    Delete
+                  </div>
+                  <div
+                    className="btn cancel"
+                    onClick={() => handleCloseSaveAll(index)}
+                  >
+                    Cancel
+                  </div>
+                </div>
+              </dialog>
             </div>
           );
         })}
