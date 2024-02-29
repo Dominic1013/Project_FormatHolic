@@ -5,6 +5,7 @@ import formatImageApi from "../../api/format.image.api";
 import { FaSave } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
+import StorageModal from "../../Components/StorageModal/StorageModal";
 
 // test data
 const testData = [
@@ -49,7 +50,10 @@ const Storage = () => {
   // warningDelete dialog state
   const [dialogRefs, setDialogRefs] = useState([]);
 
-  //Function to handle close icons click
+  const [storageModalOpen, setStorageModalOpen] = useState(false);
+  const [whichStorageModal, setWhichStorageModal] = useState("");
+
+  //get formatImage fetch---------------
   useEffect(() => {
     const getFormats = async () => {
       const { response, err } = await formatImageApi.getFormat();
@@ -63,13 +67,34 @@ const Storage = () => {
 
     getFormats();
   }, []);
+  //-------------------------------------
 
   //test---------------------
-  useEffect(() => {
-    console.log(formatImages);
-  }, [formatImages]);
+  // useEffect(() => {
+  //   console.log(formatImages);
+  // }, [formatImages]);
+  // useEffect(() => {
+  //   console.log(whichStorageModal);
+  // }, [whichStorageModal]);
   //-------------------------
 
+  //Function to handle StorageModal Open & Which one----
+
+  const handleStorageModal = (index) => {
+    // index來自於map的key，而它的順序剛好對應data內的index順序。
+    // console.log("hello" + index);
+    setWhichStorageModal(formatImages[index]);
+
+    // setStorageModalOpen((prev) => !prev);
+    setStorageModalOpen(true);
+  };
+  const handleStorageModalClose = () => {
+    setStorageModalOpen(false);
+  };
+
+  //----------------------------------------------------
+
+  //Function to handle close icons click
   const deleteHandler = (index) => {
     //刪除該formatImages內的內容(完成)
     //將刪除後的內容傳到mongoDB（未完成）
@@ -96,6 +121,8 @@ const Storage = () => {
   const handleCloseSaveAll = (index) => {
     dialogRefs[index].current.close();
   };
+
+  //----------------------------------------
 
   return (
     <section className="storageSection container flex">
@@ -126,12 +153,15 @@ const Storage = () => {
         {formatImages?.map((data, index) => {
           return (
             <div className="dataDiv flex" key={index}>
-              <img src={data.formatImageUrl[0]?.image_path} alt="img" />
+              <img
+                src={data.formatImageUrl[0]?.image_path}
+                alt="img"
+                onClick={() => handleStorageModal(index)}
+              />
               {/* <div className="dataContent">
                 <h3>{data.teamName}</h3>
                 <p>{data.updateDay} days updated</p>
               </div> */}
-              {/* <div className="delete" onClick={() => deleteHandler(index)}> */}
               <div className="delete" onClick={() => handleOpenSaveAll(index)}>
                 <AiFillCloseCircle className="icon" />
               </div>
@@ -163,6 +193,15 @@ const Storage = () => {
           );
         })}
       </div>
+      {storageModalOpen ? (
+        <StorageModal
+          className="storageModal"
+          data={whichStorageModal}
+          closeFn={handleStorageModalClose}
+        />
+      ) : (
+        ""
+      )}
     </section>
   );
 };

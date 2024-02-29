@@ -28,7 +28,9 @@
 
 // scss-----------------------
 .storageSection {
+  position: relative;
   width: 100%;
+  min-height: 100vh;
 
   flex-direction: column;
   justify-content: center;
@@ -89,7 +91,7 @@
   .secondBox {
     flex-direction: column;
     width: 100%;
-    // border: 2px solid red;
+    border: 2px solid red;
 
     .dataDiv {
       position: relative;
@@ -129,7 +131,7 @@
 
       .delete {
         cursor: pointer;
-        z-index: 100;
+        z-index: 10;
 
         .icon {
           font-size: 1.5rem;
@@ -178,6 +180,10 @@
       }
     }
   }
+
+  // .storageModal {
+  //   position: absolute;
+  // }
 }
 
 // Media Queries--------------
