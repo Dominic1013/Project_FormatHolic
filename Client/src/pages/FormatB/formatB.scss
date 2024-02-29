@@ -45,6 +45,26 @@
     margin-bottom: 4rem;
   }
 
+  .saveAllBtn {
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    width: auto;
+    button {
+      background: var(--gradientColor);
+      outline: none;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      border-radius: 5px;
+      padding: 0.4rem;
+      width: auto;
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+
   .swiperDiv {
     background: var(--divColor);
     padding: 0.5rem;
@@ -130,6 +150,9 @@
     border-radius: 10px;
     padding: 3rem;
     box-shadow: 0 0 0.5rem 0.25rem hsl(0 0% 0% / 10%);
+    &::backdrop {
+      background: rgba(0, 0, 0, 0.7);
+    }
 
     h3,
     input,
@@ -160,6 +183,47 @@
       color: red;
     }
   }
+
+  .saveAllDialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: none;
+    border-radius: 10px;
+    padding: 3rem;
+    box-shadow: 0 0 0.5rem 0.25rem hsl(0 0% 0% / 10%);
+    background: var(--whiteColorDeam);
+
+    &::backdrop {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    p {
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .SaveAllButtons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      font-weight: 500;
+      margin-top: 1rem;
+      .cancel {
+        background: grey;
+        &:hover {
+          opacity: 0.9;
+        }
+      }
+    }
+  }
 }
 
 // Media Queries------------------
@@ -179,18 +243,6 @@
 
       canvas {
         transform: scale(2); // for canvas width height problem
-      }
-    }
-
-    .saveAllBtn {
-      margin-bottom: 2rem;
-      font-size: 1rem;
-      border-radius: 5px;
-      width: auto;
-      button {
-        border-radius: 5px;
-        padding: 0.25rem;
-        width: auto;
       }
     }
 
@@ -251,6 +303,10 @@
     }
     .toggleContainer {
       display: none;
+    }
+
+    .saveAllBtn {
+      margin-top: 3rem;
     }
   }
 }
