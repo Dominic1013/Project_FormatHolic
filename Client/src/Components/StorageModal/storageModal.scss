@@ -1,0 +1,68 @@
+.modalWrapper {
+  position: absolute;
+  width: 100vw;
+  min-height: 100vh;
+  border: 2px solid blue;
+  .modalOverlay {
+    // position: absolute;
+
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .modalContainer {
+    position: absolute;
+    z-index: 20;
+
+    width: 90vw;
+    height: fit-content;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.9);
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    h2,
+    p {
+      width: 100%;
+      text-align: center;
+      //   border: 1px solid red;
+    }
+    .swiperDiv {
+      //max-width: 800px;
+      //   border: 2px solid green;
+      width: 70%;
+
+      margin: auto;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+      border-radius: 10px;
+      div {
+        .cldImage {
+          max-width: 100%; /* 讓圖片自適應父元素的大小 */
+          height: auto; /* 保持圖片的原始高寬比 */
+        }
+      }
+    }
+  }
+}

@@ -115,9 +115,9 @@ const Layout = () => {
                 </li>
 
                 {/* 這個應該要提交送出所有的變動 */}
-                <button className="btn">
+                {/* <button className="btn">
                   <a href="">Save All Formation</a>
-                </button>
+                </button> */}
 
                 <button className="btn">
                   <a href="/storage">Check All Formation</a>

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./storage.scss";
-
+import formatImageApi from "../../api/format.image.api";
 // import icons
 import { FaSave } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
+import StorageModal from "../../Components/StorageModal/StorageModal";
 
 // test data
 const testData = [
@@ -43,13 +44,85 @@ const testData = [
 ];
 
 const Storage = () => {
-  const [dataStyle, setDataStyle] = useState("dataDiv flex");
-  //Function to handle close icons click
-  const deleteHandler = (e) => {
-    alert(e.target + "你好");
+  const [count, setCount] = useState(0);
+  const [formatImages, setFormatImages] = useState([]);
 
-    // setDataStyle("dataDiv flex deleteDiv");
+  // warningDelete dialog state
+  const [dialogRefs, setDialogRefs] = useState([]);
+
+  const [storageModalOpen, setStorageModalOpen] = useState(false);
+  const [whichStorageModal, setWhichStorageModal] = useState("");
+
+  //get formatImage fetch---------------
+  useEffect(() => {
+    const getFormats = async () => {
+      const { response, err } = await formatImageApi.getFormat();
+
+      if (err) console.log(err);
+      if (response) {
+        setCount(response.length);
+        setFormatImages([...response]);
+      }
+    };
+
+    getFormats();
+  }, []);
+  //-------------------------------------
+
+  //test---------------------
+  // useEffect(() => {
+  //   console.log(formatImages);
+  // }, [formatImages]);
+  // useEffect(() => {
+  //   console.log(whichStorageModal);
+  // }, [whichStorageModal]);
+  //-------------------------
+
+  //Function to handle StorageModal Open & Which one----
+
+  const handleStorageModal = (index) => {
+    // index來自於map的key，而它的順序剛好對應data內的index順序。
+    // console.log("hello" + index);
+    setWhichStorageModal(formatImages[index]);
+
+    // setStorageModalOpen((prev) => !prev);
+    setStorageModalOpen(true);
   };
+  const handleStorageModalClose = () => {
+    setStorageModalOpen(false);
+  };
+
+  //----------------------------------------------------
+
+  //Function to handle close icons click
+  const deleteHandler = (index) => {
+    //刪除該formatImages內的內容(完成)
+    //將刪除後的內容傳到mongoDB（未完成）
+
+    setFormatImages((prevFormatImages) => {
+      const newFormatImage = prevFormatImages.filter((_, i) => i !== index);
+      return newFormatImage;
+    });
+    dialogRefs[index].current.close();
+  };
+
+  // save all dialog Fn--------------------
+
+  // const warningDialog = React.useRef(null);
+  useEffect(() => {
+    // 為每個formatImages內的戰術做一個ref
+    setDialogRefs(formatImages.map(() => React.createRef()));
+  }, [formatImages]);
+
+  const handleOpenSaveAll = (index) => {
+    dialogRefs[index].current.showModal();
+  };
+
+  const handleCloseSaveAll = (index) => {
+    dialogRefs[index].current.close();
+  };
+
+  //----------------------------------------
 
   return (
     <section className="storageSection container flex">
@@ -64,7 +137,7 @@ const Storage = () => {
           <h3>File</h3>
 
           {/* p要改成資料的真正數量 */}
-          <p className="fileNumbers">4</p>
+          <p className="fileNumbers">{count}</p>
         </div>
 
         <div className="BackHome item flex">
@@ -77,21 +150,58 @@ const Storage = () => {
       {/* --------------------------------------------- */}
       <div className="secondBox flex">
         {/* simulate the DB data to mapping */}
-        {testData.map((data) => {
+        {formatImages?.map((data, index) => {
           return (
-            <div className={dataStyle}>
-              <img src={data.img} alt="img" />
-              <div className="dataContent">
+            <div className="dataDiv flex" key={index}>
+              <img
+                src={data.formatImageUrl[0]?.image_path}
+                alt="img"
+                onClick={() => handleStorageModal(index)}
+              />
+              {/* <div className="dataContent">
                 <h3>{data.teamName}</h3>
                 <p>{data.updateDay} days updated</p>
+              </div> */}
+              <div className="delete" onClick={() => handleOpenSaveAll(index)}>
+                <AiFillCloseCircle className="icon" />
               </div>
-              <div className="delete">
-                <AiFillCloseCircle className="icon" onClick={deleteHandler} />
-              </div>
+
+              {/* delete dialog */}
+              <dialog ref={dialogRefs[index]} className="warningDialog">
+                <div
+                  className="close"
+                  onClick={() => handleCloseSaveAll(index)}
+                >
+                  <AiFillCloseCircle className="icon" />
+                </div>
+                <h3>Do you want to delete this formation?</h3>
+                <p>Click "Delete" will delete this formation forever.</p>
+
+                <div className="warningDialogButtons">
+                  <div className="btn" onClick={() => deleteHandler(index)}>
+                    Delete
+                  </div>
+                  <div
+                    className="btn cancel"
+                    onClick={() => handleCloseSaveAll(index)}
+                  >
+                    Cancel
+                  </div>
+                </div>
+              </dialog>
             </div>
           );
         })}
       </div>
+      {storageModalOpen ? (
+        <StorageModal
+          className="storageModal"
+          data={whichStorageModal}
+          closeFn={handleStorageModalClose}
+        />
+      ) : (
+        ""
+      )}
     </section>
   );
 };

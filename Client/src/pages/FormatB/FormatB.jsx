@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./formatB.scss";
 import axios from "axios";
+import formatImageApi from "../../api/format.image.api";
 
 // import icons
 import { MdOutlineDataSaverOn } from "react-icons/md";
@@ -82,6 +83,10 @@ const FormatB = () => {
   const [canvasSize, setCanvasSize] = useState({ width: 873, height: 494 });
 
   const stageRef = React.useRef(null);
+
+  // useEffect(() => {
+  //   console.log(saveImageUrl);
+  // }, [saveImageUrl]);
 
   // ----------------------------------------------- for circle init
   //for circle X
@@ -306,20 +311,6 @@ const FormatB = () => {
     }
   };
 
-  // const handleMouseMove = (e) => {
-  //   if (!isDrawing) {
-  //     return;
-  //   }
-  //   const stage = e.target.getStage();
-  //   const point = stage.getPointerPosition();
-  //   let lastLine = lines[lines.length - 1];
-  //   lastLine.points = lastLine.points.concat([point.x, point.y]);
-
-  //   setLines(lines.concat());
-  //   // bc we change the data didnt with setState,react didnt know the change,
-  //   // create a copy to useState, let it know state is changed.
-  // };
-
   const handleMouseMove = (e) => {
     if (!isDrawing) {
       return;
@@ -403,34 +394,19 @@ const FormatB = () => {
     setSaveImageUrl([...saveImageUrl, newImage]);
 
     console.log("Upload succeed");
+    alert("This strategy Uploads succeed！");
   };
 
   // ------------------------------
 
-  // ------------------------------PrevStep & NextStep
+  const handleSubmit = async () => {
+    const { response, err } = await formatImageApi.add(saveImageUrl);
 
-  // fnCollection - prevStep
-  // const handlePrevStep = () => {
-  //   let newLines = lines.slice(); // 淺拷貝
-  //   if (newLines.length > 0) {
-  //     setRestore([...restore, newLines[newLines.length - 1]]); // store the pop() element to restore state
-  //     newLines.pop();
-  //     setLines(newLines);
-  //   }
-  // };
-  // fnCollection - nextStep
-  // const handleNextStep = () => {
-  //   if (restore.length < 1) {
-  //     return;
-  //   }
-  //   let newLines = lines.slice(); // 淺拷貝
-  //   if (newLines.length > 0) {
-  //     setLines([...newLines, restore[restore.length - 1]]); // put the pop( element into lines state)
-  //     let newRestore = restore.slice(); // 淺拷貝
-  //     newRestore.pop();
-  //     setRestore(newRestore);
-  //   }
-  // };
+    if (err) console.log(err);
+    if (response) console.log("ok");
+  };
+
+  // ------------------------------PrevStep & NextStep
 
   const handlePrevStep = () => {
     if (lines.length <= 0) {
@@ -472,6 +448,17 @@ const FormatB = () => {
       setCollectionActive("fnCollection grid container");
     }
   };
+
+  // save all dialog Fn--------------------
+  const saveAllDialog = React.useRef(null);
+  const handleOpenSaveAll = () => {
+    saveAllDialog.current.showModal();
+  };
+
+  const handleCloseSaveAll = () => {
+    saveAllDialog.current.close();
+  };
+  //---------------------------------------
 
   return (
     <div className="formatB flex">
@@ -519,16 +506,6 @@ const FormatB = () => {
                   width={circleRadius * 2}
                 ></Text>
               </Group>
-              // <Circle
-              //   key={index}
-              //   x={player.x}
-              //   y={player.y}
-              //   draggable
-              //   onDragStart={(e) => handleDragStart(e, index)}
-              //   onDragEnd={(e) => handleDragEnd(e, index)}
-              //   radius={circleRadius}
-              //   fill={player.color}
-              // ></Circle>
             ))}
             {personValue
               ? addPlayers.map((addPlayer, i) => (
@@ -571,6 +548,11 @@ const FormatB = () => {
         <RiFunctionLine className="icon" />
       </div>
       {/* --------------------------------------------------- */}
+
+      <div className="saveAllBtn">
+        <button onClick={handleOpenSaveAll}> Save All </button>
+      </div>
+
       {/* swiper.js */}
 
       <div className="swiperDiv">
@@ -654,6 +636,8 @@ const FormatB = () => {
           {/* <p className="fnText">Next Step</p> */}
         </div>
       </div>
+
+      {/* add players dialog */}
       <dialog ref={dialog} className="dialog">
         <div className="close" onClick={handleCloseDialog}>
           <AiFillCloseCircle className="icon" />
@@ -675,6 +659,25 @@ const FormatB = () => {
         ) : (
           ""
         )}
+      </dialog>
+
+      {/* save all dialog */}
+
+      <dialog ref={saveAllDialog} className="saveAllDialog">
+        <div className="close" onClick={handleCloseSaveAll}>
+          <AiFillCloseCircle className="icon" />
+        </div>
+        <h3>Do you want to save all changes?</h3>
+        <p>Click "Save" to be redirected to the Storage Page.</p>
+
+        <div className="SaveAllButtons">
+          <div className="btn" onClick={handleSubmit}>
+            Save
+          </div>
+          <div className="btn cancel" onClick={handleCloseSaveAll}>
+            Cancel
+          </div>
+        </div>
       </dialog>
     </div>
   );

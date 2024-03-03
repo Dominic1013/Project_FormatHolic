@@ -1,8 +1,8 @@
 import publicClient from "./public.client";
 
 const userEndpoints = {
-  register: "/register",
-  login: "/login",
+  register: "user/register",
+  login: "user/login",
 };
 
 const userApi = {
