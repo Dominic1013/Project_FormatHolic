@@ -81,7 +81,7 @@ const Register = () => {
           />
           <label for="password">password :</label>
           <input
-            type="text"
+            type="password"
             id="password"
             onChange={registerForm.handleChange}
             value={registerForm.values.password}

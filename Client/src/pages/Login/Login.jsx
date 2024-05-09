@@ -62,7 +62,7 @@ const Login = () => {
           />
           <label for="password">password :</label>
           <input
-            type="text"
+            type="password"
             id="password"
             placeholder="Enter your password"
             onChange={loginFrom.handleChange}

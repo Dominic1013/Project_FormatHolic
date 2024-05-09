@@ -57,7 +57,11 @@ const Layout = () => {
                 </li>
 
                 <li className="navItem">
-                  <a href="#" className="navLink">
+                  <a
+                    target="_blank"
+                    href="https://github.com/Dominic1013/Project_FormatHolic"
+                    className="navLink"
+                  >
                     HowToUse
                   </a>
                 </li>
@@ -109,21 +113,23 @@ const Layout = () => {
                 </li>
 
                 <li className="navItem">
-                  <a href="" className="navLink">
+                  <a
+                    target="_blank"
+                    href="https://github.com/Dominic1013/Project_FormatHolic"
+                    className="navLink"
+                  >
                     HowToUse
                   </a>
                 </li>
-
-                {/* 這個應該要提交送出所有的變動 */}
-                {/* <button className="btn">
-                  <a href="">Save All Formation</a>
-                </button> */}
 
                 <button className="btn">
                   <a href="/storage">Check All Formation</a>
                 </button>
 
-                <button className="btn" onClick={() => dispatch(setUser(null))}>
+                <button
+                  className="btn logout"
+                  onClick={() => dispatch(setUser(null))}
+                >
                   Logout
                 </button>
 

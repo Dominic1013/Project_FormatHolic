@@ -46,7 +46,10 @@ const Home = () => {
       </div>
 
       <button className="howToUse btn flex">
-        <a href="#">
+        <a
+          target="_blank"
+          href="https://github.com/Dominic1013/Project_FormatHolic"
+        >
           How To Use <FaBookMedical className="icon" />
         </a>
       </button>
